@@ -1,0 +1,14 @@
+[
+  {"id":"c001","name":"Ana Paula","phone":"+55 11 91234-1001","status":"entrada","tags":["novo lead","site"]},
+  {"id":"c002","name":"Carlos Mendes","phone":"+55 11 91234-1002","status":"em_atendimento","tags":["vip","renovação"]},
+  {"id":"c003","name":"Fernanda Lima","phone":"+55 11 91234-1003","status":"concluido","tags":["suporte","resolvido"]},
+  {"id":"c004","name":"Ricardo Alves","phone":"+55 11 91234-1004","status":"cancelado","tags":["sem interesse"]},
+  {"id":"c005","name":"Juliana Rocha","phone":"+55 11 91234-1005","status":"entrada","tags":["indicação"]},
+  {"id":"c006","name":"Paulo Henrique","phone":"+55 11 91234-1006","status":"em_atendimento","tags":["financeiro"]},
+  {"id":"c007","name":"Camila Souza","phone":"+55 11 91234-1007","status":"entrada","tags":["dúvida técnica"]},
+  {"id":"c008","name":"Bruno Nunes","phone":"+55 11 91234-1008","status":"concluido","tags":["onboarding"]},
+  {"id":"c009","name":"Patrícia Gomes","phone":"+55 11 91234-1009","status":"em_atendimento","tags":["atraso pagamento"]},
+  {"id":"c010","name":"Lucas Freitas","phone":"+55 11 91234-1010","status":"cancelado","tags":["concorrente"]},
+  {"id":"c011","name":"Sofia Martins","phone":"+55 11 91234-1011","status":"entrada","tags":["instagram"]},
+  {"id":"c012","name":"Diego Barros","phone":"+55 11 91234-1012","status":"em_atendimento","tags":["upgrade"]}
+]

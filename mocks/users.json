@@ -1,0 +1,14 @@
+{
+  "INVITE_TOKEN_123": {
+    "id": "u_001",
+    "name": "Mariana Costa",
+    "email": "mariana.costa@empresa.com",
+    "phone": "+55 11 98888-1122"
+  },
+  "INVITE_TOKEN_456": {
+    "id": "u_002",
+    "name": "João Ribeiro",
+    "email": "joao.ribeiro@empresa.com",
+    "phone": "+55 21 97777-3344"
+  }
+}
