@@ -1,686 +1,333 @@
-const appRoot = document.getElementById('app');
+const app = document.getElementById('app');
 
-const storageKeys = {
-  user: 'blip_mock_user',
-  hasPassword: 'blip_has_password',
-  connected: 'blip_connected',
-  conversations: 'blip_conversations_override',
-  contacts: 'blip_contacts_override'
+const journeys = {
+  agente: {
+    title: 'Jornada 1 · Agente / Franqueado',
+    subtitle: 'Produtividade com fricção zero e expansão PLG.',
+    screens: [
+      {
+        title: '1) Onboarding (Fricção Zero)',
+        body: `
+          <div class="layout two-col">
+            <section class="panel card">
+              <h3>Conectar WhatsApp Business via QR</h3>
+              <p class="small">Coexistência transparente: o agente mantém o WhatsApp nativo no celular e a Blip espelha no backend (RF01).</p>
+              <div class="qr"></div>
+              <div class="inline-badges">
+                <span class="badge success">Conexão em ~30s</span>
+                <span class="badge info">Sincronização Meta API: últimos 6 meses</span>
+              </div>
+              <button class="primary-btn" style="margin-top:12px;">Já escaneei</button>
+            </section>
+            <aside class="panel card phone-preview">
+              <h4>Celular do agente (permanece igual)</h4>
+              <p class="small">Nenhuma troca de app. Apenas ganhos de organização e IA no desktop.</p>
+              <div class="chat-bubble in">Cliente: "Qual prazo de entrega?"</div>
+              <div class="chat-bubble out">Agente: "Te confirmo agora 😊"</div>
+            </aside>
+          </div>
+        `
+      },
+      {
+        title: '2) Sidekick (Super WhatsApp)',
+        body: `
+          <div class="layout three-col">
+            <aside class="panel card">
+              <h3>Triagem Híbrida</h3>
+              <p class="small">Fluxo determinístico + probabilístico antes do humano (RF02).</p>
+              <ul class="mini-list">
+                <li>IA resolve dúvidas repetitivas.</li>
+                <li>IA pontua probabilidade de fechamento.</li>
+                <li>Humano atua em negociação e exceções.</li>
+              </ul>
+            </aside>
+            <section class="panel card">
+              <h3>Kanban Comercial</h3>
+              <div class="kanban" style="margin-top:12px;">
+                <div class="column"><h4>Triagem IA</h4><div class="lead-card"><strong>Maria · Farmácia Sol</strong><span class="small">FAQ prazo entregue automaticamente</span></div></div>
+                <div class="column"><h4>Lead Quente</h4><div class="lead-card"><strong>João · Clínica Viva</strong><span class="small">Score de fechamento: 85%</span></div></div>
+                <div class="column"><h4>Follow-up</h4><div class="lead-card"><strong>Ana · Loja Centro</strong><span class="small">Preferência: contato à tarde</span></div></div>
+                <div class="column"><h4>Fechado</h4><div class="lead-card"><strong>Grupo Lima</strong><span class="small">Ticket R$ 12.000</span></div></div>
+              </div>
+            </section>
+            <aside class="panel card">
+              <h3>IA Insights</h3>
+              <p class="small">• Próxima melhor ação: oferecer combo premium.</p>
+              <p class="small">• Objeção dominante: preço.</p>
+              <p class="small">• Horário ideal: 16h–18h.</p>
+              <div class="metric-line"><span>Priorização de leads</span><strong>+33%</strong></div>
+            </aside>
+          </div>
+        `
+      },
+      {
+        title: '3) Gatilho de Upsell (PLG)',
+        body: `
+          <section class="panel card">
+            <h3>Momento de expansão para Blip Desk</h3>
+            <p class="small">Upsell não intrusivo no fluxo do agente, orientado por valor real já percebido.</p>
+            <div class="banner-upsell">
+              <strong>Automatize respostas repetitivas com o Blip Desk.</strong>
+              <p class="small" style="margin-top:6px;">Ganhos previstos: -28% no TMA e +11% de conversão em 30 dias.</p>
+              <button class="ghost-btn" style="margin-top:8px;">Solicitar upgrade ao Gestor</button>
+            </div>
+          </section>
+        `
+      }
+    ]
+  },
+  gestor: {
+    title: 'Jornada 2 · Gestor de Equipe',
+    subtitle: 'Gestão autônoma com prova de ROI operacional.',
+    screens: [
+      {
+        title: '1) Setup Rápido (Convite em Lote)',
+        body: `
+          <section class="panel card">
+            <h3>Importar agentes por telefone</h3>
+            <p class="small">Cole múltiplos números para envio automático de links de conexão.</p>
+            <div class="input-mock">+55 11 99999-1111\n+55 11 98888-2222\n+55 21 97777-3333\n+55 31 96666-4444</div>
+            <div class="inline-badges"><span class="badge info">4 convites prontos</span><span class="badge success">Sem dependência de TI</span></div>
+            <button class="primary-btn" style="margin-top:10px;">Disparar convites</button>
+          </section>
+        `
+      },
+      {
+        title: '2) Dashboard da Célula',
+        body: `
+          <div class="layout two-col">
+            <div class="panel card">
+              <h3>Tabela de agentes</h3>
+              <table class="table" style="margin-top:10px;">
+                <tr><th>Agente</th><th>Status</th><th>Mensagens</th><th>TMA</th></tr>
+                <tr><td>Patrícia</td><td><span class="badge success">Online</span></td><td>72</td><td>02:10</td></tr>
+                <tr><td>Rafael</td><td><span class="badge warning">Atenção</span></td><td>59</td><td>02:48</td></tr>
+                <tr><td>Bianca</td><td><span class="badge success">Online</span></td><td>65</td><td>01:57</td></tr>
+              </table>
+            </div>
+            <div class="panel card">
+              <h3>Eficiência operacional</h3>
+              <p class="small">Comparativo explícito: Sincronização Meta API (últimos 6 meses) vs desempenho atual (RF03).</p>
+              <div class="kpi-grid" style="margin-top:10px;">
+                <div class="kpi"><span class="small">TMA baseline</span><strong>04:20</strong></div>
+                <div class="kpi"><span class="small">TMA atual</span><strong>02:11</strong></div>
+                <div class="kpi"><span class="small">Conversão</span><strong>+18%</strong></div>
+              </div>
+              <h4 style="margin-top:12px;">Nuvem de tópicos (IA)</h4>
+              <div class="topic-cloud" style="margin-top:8px;"><span class="topic">Preço</span><span class="topic">Prazo de entrega</span><span class="topic">Troca</span><span class="topic">Garantia</span></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: '3) Checkout Self-Service',
+        body: `
+          <section class="panel card">
+            <h3>Contratação local (PLG expand)</h3>
+            <p class="small">O gestor da célula pode contratar a versão completa para o time sem ciclo enterprise inicial.</p>
+            <div class="pricing">
+              <div><strong>Desk PRO</strong><p class="small">10 números conectados</p></div>
+              <div><strong>R$ 899/mês</strong><p class="small">cartão de crédito</p></div>
+              <button class="primary-btn">Contratar agora</button>
+            </div>
+          </section>
+        `
+      }
+    ]
+  },
+  matriz: {
+    title: 'Jornada 3 · Matriz / Brand Owner',
+    subtitle: 'Governança central, compliance e poder de veto.',
+    screens: [
+      {
+        title: '1) Descoberta de Shadow WhatsApp',
+        body: `
+          <section class="panel card">
+            <h3>Alerta de exposição da marca</h3>
+            <div class="funnel" style="margin-top:10px;">
+              <div class="funnel-step">Total de lojas no mercado: 3.000</div>
+              <div class="funnel-step">Números detectados usando a marca: 1.240</div>
+              <div class="funnel-step">Números verificados na Business Manager: 390</div>
+            </div>
+          </section>
+        `
+      },
+      {
+        title: '2) Central de Vínculo',
+        body: `
+          <div class="layout two-col">
+            <section class="panel card">
+              <h3>Números detectados</h3>
+              <table class="table" style="margin-top:10px;">
+                <tr><th>Número</th><th>Loja</th><th>Status</th><th>Ações</th></tr>
+                <tr><td>+55 11 95555-1001</td><td>Franquia Sul</td><td><span class="badge warning">Não verificado</span></td><td><button class="ghost-btn">Reconhecer vínculo</button></td></tr>
+                <tr><td>+55 11 95555-1002</td><td>Unidade Centro</td><td><span class="badge danger">Risco</span></td><td><button class="primary-btn">Denunciar/Desconectar</button></td></tr>
+              </table>
+            </section>
+            <aside class="panel card">
+              <h3>Hierarquia de permissões (RF04)</h3>
+              <div class="matrix-grid">
+                <div><strong>Matriz</strong><p class="small">Visibilidade total + veto</p></div>
+                <div><strong>Franquia</strong><p class="small">Autonomia operacional local</p></div>
+              </div>
+            </aside>
+          </div>
+        `
+      },
+      {
+        title: '3) Auditoria de Qualidade (QA IA)',
+        body: `
+          <section class="panel card">
+            <h3>Desvios de branding detectados</h3>
+            <article class="alert-card">
+              <strong>Red Flag · Franquia Sul</strong>
+              <p class="small">Uso de política de descontos não autorizada em 37 conversas.</p>
+            </article>
+            <div class="inline-badges"><span class="badge danger">Risco de compliance</span><span class="badge warning">Revisão jurídica recomendada</span></div>
+          </section>
+        `
+      }
+    ]
+  },
+  comercial: {
+    title: 'Jornada 4 · Comercial Blip',
+    subtitle: 'Product-Led Sales com sinais de adoção orgânica.',
+    screens: [
+      {
+        title: '1) Painel de Inteligência B2B',
+        body: `
+          <section class="panel card">
+            <h3>Penetração por marca</h3>
+            <div class="kpi-grid" style="margin-top:10px;">
+              <div class="kpi"><span class="small">Lojas Marca X</span><strong>3.000</strong></div>
+              <div class="kpi"><span class="small">Franqueados conectados</span><strong>450</strong></div>
+              <div class="kpi"><span class="small">Penetração orgânica</span><strong>15%</strong></div>
+            </div>
+          </section>
+        `
+      },
+      {
+        title: '2) Radar de Oportunidades',
+        body: `
+          <section class="panel card">
+            <h3>Gatilhos de venda enterprise</h3>
+            <div class="timeline">
+              <div class="timeline-item"><strong>Empresa Y</strong><p class="small">Atingiu 100 números conectados · abordar governança enterprise.</p></div>
+              <div class="timeline-item"><strong>Rede Z</strong><p class="small">+40% crescimento em 3 semanas · janela de upsell ativa.</p></div>
+            </div>
+          </section>
+        `
+      },
+      {
+        title: '3) Gerador de Pitch',
+        body: `
+          <section class="panel card">
+            <h3>Prévia de relatório ROI para C-Level</h3>
+            <p class="small">Documento com baseline 6 meses, ganhos de TMA e conversão, risco de shadow e proposta de centralização.</p>
+            <button class="primary-btn" style="margin-top:10px;">Gerar PDF de ROI</button>
+            <div class="note">Adoção orgânica comprovada: TMA -41% e conversão +18% após CoEx + IA.</div>
+          </section>
+        `
+      }
+    ]
+  }
 };
 
-const state = {
-  usersByToken: {},
-  contacts: [],
-  conversations: {},
-  reports: null,
-  selectedContactId: null,
-  atendimentoMode: 'desk',
-  crmDrawerContactId: null,
-  sidebarOpen: false,
-  connectingTimer: null
-};
+const state = { view: 'landing', journey: null, screen: 0 };
 
-async function loadMocks() {
-  const [users, contacts, conversations, reports] = await Promise.all([
-    fetch('mocks/users.json').then((res) => res.json()),
-    fetch('mocks/contacts.json').then((res) => res.json()),
-    fetch('mocks/conversations.json').then((res) => res.json()),
-    fetch('mocks/reports.json').then((res) => res.json())
-  ]);
+function renderLanding() {
+  app.innerHTML = `
+    <div class="page">
+      <header class="topbar">
+        <h1>Blip CoEx: O Ecossistema de Governança e Eficiência</h1>
+        <span class="meta">Central de Comando · protótipo interativo</span>
+      </header>
+      <main class="container">
+        <div class="card panel">
+          <h2>Landing Page · 4 Portais de Jornada</h2>
+          <p class="small" style="margin-top:8px;">Aha Moment: conexão via QR e baseline retroativo para provar ROI em dias/semanas.</p>
+          <div class="inline-badges">
+            <span class="badge success">RF01 Coexistência Transparente</span>
+            <span class="badge info">RF02 Triagem Híbrida Inteligente</span>
+            <span class="badge warning">RF03 Retroatividade Meta API (6 meses)</span>
+            <span class="badge danger">RF04 Hierarquia Matriz &gt; Franquia</span>
+          </div>
+        </div>
 
-  state.usersByToken = users;
-  state.contacts = getStoredContacts() || contacts;
-  state.conversations = getStoredConversations() || conversations;
-  state.reports = reports;
+        <section class="portal-grid">
+          ${Object.entries(journeys).map(([id, item]) => `
+            <article class="portal card" data-journey="${id}">
+              <h3>${item.title}</h3>
+              <p>${item.subtitle}</p>
+              <p class="small" style="margin-top:10px;">${item.screens.length} telas de demonstração</p>
+            </article>
+          `).join('')}
+        </section>
+      </main>
+    </div>
+  `;
 
-  if (!state.selectedContactId && state.contacts[0]) {
-    state.selectedContactId = state.contacts[0].id;
-  }
+  document.querySelectorAll('[data-journey]').forEach((el) => {
+    el.addEventListener('click', () => {
+      state.view = 'journey';
+      state.journey = el.dataset.journey;
+      state.screen = 0;
+      render();
+    });
+  });
 }
 
-function parseHash() {
-  const fullHash = window.location.hash || '#/invite';
-  const cleanHash = fullHash.replace(/^#/, '');
-  const [pathPart, queryPart] = cleanHash.split('?');
-  return {
-    path: pathPart || '/invite',
-    query: new URLSearchParams(queryPart || '')
-  };
-}
+function renderJourney() {
+  const current = journeys[state.journey];
+  const screen = current.screens[state.screen];
 
-function navigate(path) {
-  window.location.hash = path;
-}
+  app.innerHTML = `
+    <div class="page">
+      <header class="topbar">
+        <h1>${current.title}</h1>
+        <span class="meta">${current.subtitle}</span>
+      </header>
+      <main class="container">
+        <div class="section-header">
+          <div>
+            <p class="crumb">${screen.title}</p>
+            <p class="small">Tela ${state.screen + 1} de ${current.screens.length}</p>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="ghost-btn" id="backLanding">Voltar aos portais</button>
+            <button class="ghost-btn" id="prevScreen" ${state.screen === 0 ? 'disabled' : ''}>Anterior</button>
+            <button class="primary-btn" id="nextScreen">${state.screen === current.screens.length - 1 ? 'Concluir jornada' : 'Próxima'}</button>
+          </div>
+        </div>
+        ${screen.body}
+      </main>
+    </div>
+  `;
 
-function getStoredUser() {
-  const raw = localStorage.getItem(storageKeys.user);
-  return raw ? JSON.parse(raw) : null;
-}
+  document.getElementById('backLanding').addEventListener('click', () => {
+    state.view = 'landing';
+    render();
+  });
 
-function setStoredUser(user) {
-  localStorage.setItem(storageKeys.user, JSON.stringify(user));
-}
+  document.getElementById('prevScreen').addEventListener('click', () => {
+    if (state.screen > 0) state.screen -= 1;
+    render();
+  });
 
-function hasPassword() {
-  return localStorage.getItem(storageKeys.hasPassword) === 'true';
-}
-
-function isConnected() {
-  return localStorage.getItem(storageKeys.connected) === 'true';
-}
-
-function getStoredConversations() {
-  const raw = localStorage.getItem(storageKeys.conversations);
-  return raw ? JSON.parse(raw) : null;
-}
-
-function getStoredContacts() {
-  const raw = localStorage.getItem(storageKeys.contacts);
-  return raw ? JSON.parse(raw) : null;
-}
-
-function saveConversations() {
-  localStorage.setItem(storageKeys.conversations, JSON.stringify(state.conversations));
-}
-
-function saveContacts() {
-  localStorage.setItem(storageKeys.contacts, JSON.stringify(state.contacts));
-}
-
-function routeGuard(path) {
-  if (path.startsWith('/app')) {
-    if (!hasPassword()) {
-      navigate('/invite');
-      return false;
+  document.getElementById('nextScreen').addEventListener('click', () => {
+    if (state.screen < current.screens.length - 1) {
+      state.screen += 1;
+      render();
+      return;
     }
-    if (!isConnected()) {
-      navigate('/qr-connect');
-      return false;
-    }
-  }
-  return true;
+    state.view = 'landing';
+    render();
+  });
 }
 
 function render() {
-  const { path, query } = parseHash();
-
-  if (!routeGuard(path)) return;
-
-  clearTimeout(state.connectingTimer);
-
-  if (path === '/invite') return renderInvite(query);
-  if (path === '/create-password') return renderCreatePassword();
-  if (path === '/qr-connect') return renderQrConnect();
-  if (path === '/connecting') return renderConnecting();
-  if (path === '/connected') return renderConnected();
-  if (path === '/app/atendimento') return renderAtendimento();
-  if (path === '/app/relatorios') return renderRelatorios();
-
-  navigate('/invite');
+  if (state.view === 'landing') return renderLanding();
+  return renderJourney();
 }
 
-function getCurrentInvitedUser() {
-  const token = parseHash().query.get('token');
-  if (token && state.usersByToken[token]) return state.usersByToken[token];
-  return getStoredUser() || state.usersByToken.INVITE_TOKEN_123;
-}
-
-function renderInvite(query) {
-  const token = query.get('token') || 'INVITE_TOKEN_123';
-  const user = state.usersByToken[token];
-
-  appRoot.innerHTML = `
-    <div class="centered-screen">
-      <div class="card auth-card">
-        <div class="logo-placeholder">Blip</div>
-        <h1>Blip Go Personal</h1>
-        ${
-          user
-            ? `<p class="lead">Olá, <strong>${user.name}</strong>! Você foi convidado para conectar seu WhatsApp.</p>
-               <div class="readonly-data">
-                 <p><span>E-mail</span>${user.email}</p>
-                 <p><span>Telefone</span>${user.phone}</p>
-               </div>
-               <button class="primary-btn" id="continueInvite">Continuar</button>`
-            : `<p class="error-text">Token de convite inválido. Use um link válido para continuar.</p>`
-        }
-      </div>
-    </div>
-  `;
-
-  if (user) {
-    document.getElementById('continueInvite').addEventListener('click', () => {
-      setStoredUser(user);
-      navigate('/create-password');
-    });
-  }
-}
-
-function renderCreatePassword() {
-  const user = getCurrentInvitedUser();
-
-  if (!user) {
-    navigate('/invite');
-    return;
-  }
-
-  appRoot.innerHTML = `
-    <div class="centered-screen">
-      <form class="card auth-card" id="passwordForm">
-        <h2>Crie sua senha</h2>
-        <div class="readonly-data">
-          <p><span>Nome</span>${user.name}</p>
-          <p><span>E-mail</span>${user.email}</p>
-          <p><span>Telefone</span>${user.phone}</p>
-        </div>
-
-        <label>Senha
-          <input type="password" id="password" required placeholder="Mínimo 8 caracteres" />
-        </label>
-
-        <label>Confirmar senha
-          <input type="password" id="confirmPassword" required placeholder="Digite novamente" />
-        </label>
-
-        <p class="error-text" id="passwordError"></p>
-        <button class="primary-btn" type="submit">Salvar e continuar</button>
-      </form>
-    </div>
-  `;
-
-  document.getElementById('passwordForm').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const password = document.getElementById('password').value.trim();
-    const confirmPassword = document.getElementById('confirmPassword').value.trim();
-    const errorEl = document.getElementById('passwordError');
-
-    if (password.length < 8) {
-      errorEl.textContent = 'A senha deve ter no mínimo 8 caracteres.';
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      errorEl.textContent = 'As senhas não coincidem.';
-      return;
-    }
-
-    setStoredUser(user);
-    localStorage.setItem(storageKeys.hasPassword, 'true');
-    navigate('/qr-connect');
-  });
-}
-
-function renderQrConnect() {
-  appRoot.innerHTML = `
-    <div class="centered-screen">
-      <div class="card auth-card">
-        <h2>Conectar WhatsApp por QR Code</h2>
-        <div class="qr-box" aria-label="QR Code simulado"></div>
-        <p class="lead">
-          Abra o WhatsApp no seu celular &gt; Aparelhos conectados &gt; Conectar aparelho e escaneie o QR Code.
-        </p>
-        <button class="primary-btn" id="scannedBtn">Já escaneei</button>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('scannedBtn').addEventListener('click', () => navigate('/connecting'));
-}
-
-function renderConnecting() {
-  appRoot.innerHTML = `
-    <div class="centered-screen">
-      <div class="card auth-card text-center">
-        <div class="spinner"></div>
-        <h2>Conectando seu WhatsApp…</h2>
-        <p>Aguarde alguns instantes.</p>
-      </div>
-    </div>
-  `;
-
-  state.connectingTimer = setTimeout(() => navigate('/connected'), 2000);
-}
-
-function renderConnected() {
-  appRoot.innerHTML = `
-    <div class="centered-screen">
-      <div class="card auth-card text-center">
-        <h2>Conexão concluída!</h2>
-        <p class="lead">A partir de agora, seu WhatsApp está conectado à plataforma Blip.</p>
-        <button class="primary-btn" id="goSystemBtn">Ir para o sistema</button>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('goSystemBtn').addEventListener('click', () => {
-    localStorage.setItem(storageKeys.connected, 'true');
-    navigate('/app/atendimento');
-  });
-}
-
-function renderAppShell(content, activeItem) {
-  const user = getStoredUser();
-  const menuItems = [
-    { label: 'Atendimento', icon: '💬', route: '/app/atendimento', active: activeItem === 'atendimento' },
-    { label: 'Relatórios', icon: '📊', route: '/app/relatorios', active: activeItem === 'relatorios' },
-    { label: 'Contatos', icon: '👥' },
-    { label: 'Campanhas', icon: '📣' },
-    { label: 'Bots', icon: '🤖' },
-    { label: 'Analytics', icon: '📈' },
-    { label: 'Configurações', icon: '⚙️' }
-  ];
-
-  appRoot.innerHTML = `
-    <div class="app-shell ${state.sidebarOpen ? 'sidebar-open' : ''}">
-      <aside class="sidebar">
-        <div class="logo-placeholder">Blip</div>
-        <button class="menu-toggle" title="Exibir menu" aria-label="Exibir menu">☰</button>
-        <nav class="primary-nav">
-          ${menuItems
-            .map(
-              (item) => `
-            <button
-              class="nav-item ${item.active ? 'active' : ''} ${item.route ? '' : 'muted'}"
-              type="button"
-              ${item.route ? `data-route="${item.route}"` : ''}
-              title="${item.label}"
-              aria-label="${item.label}"
-            >
-              <span class="nav-icon">${item.icon}</span>
-              <span class="nav-tooltip">${item.label}</span>
-            </button>
-          `
-            )
-            .join('')}
-        </nav>
-        <div class="sidebar-footer">AD</div>
-      </aside>
-
-      <div class="main-panel">
-        <header class="topbar">
-          <button class="menu-btn" id="menuBtn">☰</button>
-          <h1 class="topbar-title">Atendimento</h1>
-          <div class="user-box">
-            <span>Colaborador:</span>
-            <strong>${user ? user.name : 'Usuário'}</strong>
-          </div>
-        </header>
-        <main class="content-area">${content}</main>
-      </div>
-    </div>
-  `;
-
-  document.querySelectorAll('.nav-item').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      state.sidebarOpen = false;
-      if (btn.dataset.route) navigate(btn.dataset.route);
-    });
-  });
-
-  document.getElementById('menuBtn').addEventListener('click', () => {
-    state.sidebarOpen = !state.sidebarOpen;
-    render();
-  });
-}
-
-function getMessagesFor(contactId) {
-  return state.conversations[contactId] || [];
-}
-
-function appendMessage(contactId, text) {
-  const list = getMessagesFor(contactId);
-  const newMessage = {
-    id: `m_${Date.now()}`,
-    direction: 'out',
-    text,
-    time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-  };
-  state.conversations[contactId] = [...list, newMessage];
-  saveConversations();
-}
-
-function renderAtendimento() {
-  const selectedContact = state.contacts.find((contact) => contact.id === state.selectedContactId) || state.contacts[0];
-  state.selectedContactId = selectedContact ? selectedContact.id : null;
-
-  const modeToggle = `
-    <div class="mode-toggle">
-      <span>Desk</span>
-      <label class="switch">
-        <input id="modeSwitch" type="checkbox" ${state.atendimentoMode === 'crm' ? 'checked' : ''} />
-        <span class="slider"></span>
-      </label>
-      <span>CRM</span>
-    </div>
-  `;
-
-  const content = `
-    <section class="atendimento-screen">
-      <div class="toolbar">${modeToggle}</div>
-      ${state.atendimentoMode === 'desk' ? renderDeskMode(selectedContact) : renderCrmMode()}
-    </section>
-  `;
-
-  renderAppShell(content, 'atendimento');
-
-  const switchInput = document.getElementById('modeSwitch');
-  if (switchInput) {
-    switchInput.addEventListener('change', (event) => {
-      state.atendimentoMode = event.target.checked ? 'crm' : 'desk';
-      render();
-    });
-  }
-
-  attachAtendimentoHandlers();
-}
-
-function renderDeskMode(selectedContact) {
-  const list = getMessagesFor(selectedContact?.id);
-  const previewMessage = list[0]?.text || 'Sem mensagens';
-  const lastMessage = list[list.length - 1];
-
-  return `
-    <div class="desk-wrap">
-      <div class="panel contact-list-panel">
-        <div class="list-header">
-          <h3>Atendimentos</h3>
-          <button class="primary-btn">Atender</button>
-        </div>
-        <div class="list-tabs">
-          <span class="chip active">Todos (${state.contacts.length})</span>
-          <span class="chip">Não lidos (2)</span>
-        </div>
-        <div class="contact-list">
-        ${state.contacts
-          .map(
-            (contact, index) => `
-          <button class="contact-item ${selectedContact && selectedContact.id === contact.id ? 'active' : ''}" data-contact-id="${contact.id}">
-            <div class="contact-main-row">
-              <strong>${contact.name}</strong>
-              <small>${String(8 + (index % 10)).padStart(2, '0')}:${String(12 + (index % 40)).padStart(2, '0')}</small>
-            </div>
-            <p>${(getMessagesFor(contact.id)[0]?.text || 'Sem histórico').slice(0, 42)}...</p>
-            <div class="contact-meta-row">
-              <small>#${20 + index} Fila: Default</small>
-              <span class="status-badge">${contact.status.replace('_', ' ')}</span>
-            </div>
-          </button>
-        `
-          )
-          .join('')}
-        </div>
-      </div>
-
-      <div class="panel conversation-panel">
-        ${
-          selectedContact
-            ? `
-          <div class="conversation-header">
-            <div>
-              <h3>${selectedContact.name}</h3>
-              <small>Ticket #${20 + state.contacts.findIndex((item) => item.id === selectedContact.id)}</small>
-            </div>
-            <div class="conversation-actions">
-              <button>Transferir</button>
-              <button class="primary-btn">Finalizar</button>
-            </div>
-          </div>
-          <div class="messages" id="deskMessages">
-            ${renderMessages(list)}
-          </div>
-          <form class="message-form" id="deskForm">
-            <input id="deskInput" type="text" placeholder="Escreva uma mensagem" required />
-            <button class="primary-btn" type="submit">Enviar</button>
-          </form>
-        `
-            : '<p>Selecione um contato.</p>'
-        }
-      </div>
-
-      <aside class="panel contact-info-panel">
-        ${
-          selectedContact
-            ? `
-          <h3>Dados do Contato</h3>
-          <div class="contact-data-group">
-            <h4>Informações</h4>
-            <p><span>Nome</span>${selectedContact.name}</p>
-            <p><span>Telefone</span>${selectedContact.phone}</p>
-            <p><span>E-mail</span>${selectedContact.email || selectedContact.name.toLowerCase().replace(' ', '.')}@exemplo.com.br</p>
-            <p><span>Tags</span>${selectedContact.tags.join(', ')}</p>
-          </div>
-          <div class="contact-data-group">
-            <h4>Resumo recente</h4>
-            <p><span>Última mensagem</span>${lastMessage?.text || previewMessage}</p>
-            <p><span>Último horário</span>${lastMessage?.time || '--:--'}</p>
-          </div>
-          <div class="contact-data-group">
-            <h4>Comentários</h4>
-            <p class="muted-text">Não há comentários sobre este usuário.</p>
-          </div>
-        `
-            : '<p>Selecione um contato para ver os detalhes.</p>'
-        }
-      </aside>
-    </div>
-  `;
-}
-
-function renderCrmMode() {
-  const columns = [
-    { key: 'entrada', label: 'Entrada' },
-    { key: 'em_atendimento', label: 'Em atendimento' },
-    { key: 'concluido', label: 'Concluído' },
-    { key: 'cancelado', label: 'Cancelado' }
-  ];
-
-  const drawerContact = state.contacts.find((contact) => contact.id === state.crmDrawerContactId);
-
-  return `
-    <div class="crm-layout">
-      <div class="kanban">
-        ${columns
-          .map((column) => {
-            const cards = state.contacts.filter((contact) => contact.status === column.key);
-            return `
-              <section class="kanban-column">
-                <h4>${column.label} <span>${cards.length}</span></h4>
-                <div class="kanban-cards">
-                  ${cards
-                    .map(
-                      (contact) => `
-                    <button class="kanban-card" data-drawer-contact="${contact.id}">
-                      <strong>${contact.name}</strong>
-                      <small>${contact.phone}</small>
-                      <p>${contact.tags.join(' • ')}</p>
-                    </button>
-                  `
-                    )
-                    .join('')}
-                </div>
-              </section>
-            `;
-          })
-          .join('')}
-      </div>
-
-      ${drawerContact ? renderCrmDrawer(drawerContact) : ''}
-    </div>
-  `;
-}
-
-function renderCrmDrawer(contact) {
-  const messages = getMessagesFor(contact.id);
-  const lastMessages = messages.slice(-3);
-
-  return `
-    <aside class="crm-drawer">
-      <button class="close-drawer" id="closeDrawer">×</button>
-      <h3>${contact.name}</h3>
-      <p>${contact.phone}</p>
-      <p class="tags">${contact.tags.map((tag) => `<span>${tag}</span>`).join('')}</p>
-
-      <label>Status do atendimento
-        <select id="statusSelect" data-contact-id="${contact.id}">
-          <option value="entrada" ${contact.status === 'entrada' ? 'selected' : ''}>Entrada</option>
-          <option value="em_atendimento" ${contact.status === 'em_atendimento' ? 'selected' : ''}>Em atendimento</option>
-          <option value="concluido" ${contact.status === 'concluido' ? 'selected' : ''}>Concluído</option>
-          <option value="cancelado" ${contact.status === 'cancelado' ? 'selected' : ''}>Cancelado</option>
-        </select>
-      </label>
-
-      <div class="drawer-section">
-        <h4>Últimas mensagens</h4>
-        ${lastMessages.map((msg) => `<p>• ${msg.text}</p>`).join('')}
-      </div>
-
-      <div class="drawer-section messages compact-messages">${renderMessages(messages)}</div>
-
-      <form id="drawerForm" class="message-form">
-        <input id="drawerInput" type="text" placeholder="Enviar mensagem..." required />
-        <button class="primary-btn" type="submit">Enviar</button>
-      </form>
-    </aside>
-  `;
-}
-
-function renderMessages(messages) {
-  return messages
-    .map(
-      (msg) => `
-      <div class="message ${msg.direction === 'out' ? 'outbound' : 'inbound'}">
-        <p>${msg.text}</p>
-        <small>${msg.time}</small>
-      </div>
-    `
-    )
-    .join('');
-}
-
-function attachAtendimentoHandlers() {
-  document.querySelectorAll('.contact-item').forEach((item) => {
-    item.addEventListener('click', () => {
-      state.selectedContactId = item.dataset.contactId;
-      render();
-    });
-  });
-
-  const deskForm = document.getElementById('deskForm');
-  if (deskForm) {
-    deskForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const input = document.getElementById('deskInput');
-      appendMessage(state.selectedContactId, input.value.trim());
-      input.value = '';
-      render();
-    });
-  }
-
-  document.querySelectorAll('[data-drawer-contact]').forEach((card) => {
-    card.addEventListener('click', () => {
-      state.crmDrawerContactId = card.dataset.drawerContact;
-      render();
-    });
-  });
-
-  const closeDrawer = document.getElementById('closeDrawer');
-  if (closeDrawer) {
-    closeDrawer.addEventListener('click', () => {
-      state.crmDrawerContactId = null;
-      render();
-    });
-  }
-
-  const statusSelect = document.getElementById('statusSelect');
-  if (statusSelect) {
-    statusSelect.addEventListener('change', () => {
-      const contact = state.contacts.find((item) => item.id === statusSelect.dataset.contactId);
-      if (contact) {
-        contact.status = statusSelect.value;
-        saveContacts();
-        render();
-      }
-    });
-  }
-
-  const drawerForm = document.getElementById('drawerForm');
-  if (drawerForm) {
-    drawerForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const input = document.getElementById('drawerInput');
-      appendMessage(state.crmDrawerContactId, input.value.trim());
-      input.value = '';
-      render();
-    });
-  }
-}
-
-function renderRelatorios() {
-  const { kpis, atendimentosPorHora, colaboradores } = state.reports;
-  const maxValue = Math.max(...atendimentosPorHora.map((item) => item.value), 1);
-
-  const content = `
-    <section class="reports-screen">
-      <h2>Relatórios</h2>
-      <div class="kpi-grid">
-        <article class="kpi-card"><h3>Total atendimentos hoje</h3><strong>${kpis.totalAtendimentosHoje}</strong></article>
-        <article class="kpi-card"><h3>Tempo médio de resposta</h3><strong>${kpis.tempoMedioResposta}</strong></article>
-        <article class="kpi-card"><h3>Conversas em aberto</h3><strong>${kpis.conversasEmAberto}</strong></article>
-        <article class="kpi-card"><h3>CSAT</h3><strong>${kpis.csat}</strong></article>
-      </div>
-
-      <div class="panel chart-panel">
-        <h3>Atendimentos por hora</h3>
-        <div class="bars">
-          ${atendimentosPorHora
-            .map(
-              (item) => `
-            <div class="bar-row">
-              <span>${item.label}</span>
-              <div class="bar-track"><div class="bar-fill" style="width:${(item.value / maxValue) * 100}%"></div></div>
-              <strong>${item.value}</strong>
-            </div>
-          `
-            )
-            .join('')}
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>Atendimentos por colaborador</h3>
-        <table>
-          <thead>
-            <tr><th>Colaborador</th><th>Atendimentos</th><th>Tempo médio</th><th>CSAT</th></tr>
-          </thead>
-          <tbody>
-            ${colaboradores
-              .map(
-                (person) => `
-              <tr>
-                <td>${person.nome}</td>
-                <td>${person.atendimentos}</td>
-                <td>${person.tempoMedio}</td>
-                <td>${person.csat}</td>
-              </tr>
-            `
-              )
-              .join('')}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  `;
-
-  renderAppShell(content, 'relatorios');
-}
-
-window.addEventListener('hashchange', render);
-
-loadMocks()
-  .then(() => {
-    if (!window.location.hash) navigate('/invite');
-    render();
-  })
-  .catch(() => {
-    appRoot.innerHTML = '<div class="centered-screen"><p>Erro ao carregar os mocks.</p></div>';
-  });
+render();
