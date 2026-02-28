@@ -260,20 +260,46 @@ function renderConnected() {
 
 function renderAppShell(content, activeItem) {
   const user = getStoredUser();
+  const menuItems = [
+    { label: 'Atendimento', icon: '💬', route: '/app/atendimento', active: activeItem === 'atendimento' },
+    { label: 'Relatórios', icon: '📊', route: '/app/relatorios', active: activeItem === 'relatorios' },
+    { label: 'Contatos', icon: '👥' },
+    { label: 'Campanhas', icon: '📣' },
+    { label: 'Bots', icon: '🤖' },
+    { label: 'Analytics', icon: '📈' },
+    { label: 'Configurações', icon: '⚙️' }
+  ];
 
   appRoot.innerHTML = `
     <div class="app-shell ${state.sidebarOpen ? 'sidebar-open' : ''}">
       <aside class="sidebar">
         <div class="logo-placeholder">Blip</div>
-        <nav>
-          <button class="nav-item ${activeItem === 'atendimento' ? 'active' : ''}" data-route="/app/atendimento">Atendimento</button>
-          <button class="nav-item ${activeItem === 'relatorios' ? 'active' : ''}" data-route="/app/relatorios">Relatórios</button>
+        <button class="menu-toggle" title="Exibir menu" aria-label="Exibir menu">☰</button>
+        <nav class="primary-nav">
+          ${menuItems
+            .map(
+              (item) => `
+            <button
+              class="nav-item ${item.active ? 'active' : ''} ${item.route ? '' : 'muted'}"
+              type="button"
+              ${item.route ? `data-route="${item.route}"` : ''}
+              title="${item.label}"
+              aria-label="${item.label}"
+            >
+              <span class="nav-icon">${item.icon}</span>
+              <span class="nav-tooltip">${item.label}</span>
+            </button>
+          `
+            )
+            .join('')}
         </nav>
+        <div class="sidebar-footer">AD</div>
       </aside>
 
       <div class="main-panel">
         <header class="topbar">
           <button class="menu-btn" id="menuBtn">☰</button>
+          <h1 class="topbar-title">Atendimento</h1>
           <div class="user-box">
             <span>Colaborador:</span>
             <strong>${user ? user.name : 'Usuário'}</strong>
@@ -287,7 +313,7 @@ function renderAppShell(content, activeItem) {
   document.querySelectorAll('.nav-item').forEach((btn) => {
     btn.addEventListener('click', () => {
       state.sidebarOpen = false;
-      navigate(btn.dataset.route);
+      if (btn.dataset.route) navigate(btn.dataset.route);
     });
   });
 
@@ -349,37 +375,93 @@ function renderAtendimento() {
 }
 
 function renderDeskMode(selectedContact) {
+  const list = getMessagesFor(selectedContact?.id);
+  const previewMessage = list[0]?.text || 'Sem mensagens';
+  const lastMessage = list[list.length - 1];
+
   return `
-    <div class="desk-layout">
-      <div class="panel contact-list">
+    <div class="desk-wrap">
+      <div class="panel contact-list-panel">
+        <div class="list-header">
+          <h3>Atendimentos</h3>
+          <button class="primary-btn">Atender</button>
+        </div>
+        <div class="list-tabs">
+          <span class="chip active">Todos (${state.contacts.length})</span>
+          <span class="chip">Não lidos (2)</span>
+        </div>
+        <div class="contact-list">
         ${state.contacts
           .map(
-            (contact) => `
+            (contact, index) => `
           <button class="contact-item ${selectedContact && selectedContact.id === contact.id ? 'active' : ''}" data-contact-id="${contact.id}">
-            <strong>${contact.name}</strong>
-            <small>${contact.phone}</small>
+            <div class="contact-main-row">
+              <strong>${contact.name}</strong>
+              <small>${String(8 + (index % 10)).padStart(2, '0')}:${String(12 + (index % 40)).padStart(2, '0')}</small>
+            </div>
+            <p>${(getMessagesFor(contact.id)[0]?.text || 'Sem histórico').slice(0, 42)}...</p>
+            <div class="contact-meta-row">
+              <small>#${20 + index} Fila: Default</small>
+              <span class="status-badge">${contact.status.replace('_', ' ')}</span>
+            </div>
           </button>
         `
           )
           .join('')}
+        </div>
       </div>
 
       <div class="panel conversation-panel">
         ${
           selectedContact
             ? `
-          <h3>${selectedContact.name}</h3>
+          <div class="conversation-header">
+            <div>
+              <h3>${selectedContact.name}</h3>
+              <small>Ticket #${20 + state.contacts.findIndex((item) => item.id === selectedContact.id)}</small>
+            </div>
+            <div class="conversation-actions">
+              <button>Transferir</button>
+              <button class="primary-btn">Finalizar</button>
+            </div>
+          </div>
           <div class="messages" id="deskMessages">
-            ${renderMessages(getMessagesFor(selectedContact.id))}
+            ${renderMessages(list)}
           </div>
           <form class="message-form" id="deskForm">
-            <input id="deskInput" type="text" placeholder="Digite uma mensagem..." required />
+            <input id="deskInput" type="text" placeholder="Escreva uma mensagem" required />
             <button class="primary-btn" type="submit">Enviar</button>
           </form>
         `
             : '<p>Selecione um contato.</p>'
         }
       </div>
+
+      <aside class="panel contact-info-panel">
+        ${
+          selectedContact
+            ? `
+          <h3>Dados do Contato</h3>
+          <div class="contact-data-group">
+            <h4>Informações</h4>
+            <p><span>Nome</span>${selectedContact.name}</p>
+            <p><span>Telefone</span>${selectedContact.phone}</p>
+            <p><span>E-mail</span>${selectedContact.email || selectedContact.name.toLowerCase().replace(' ', '.')}@exemplo.com.br</p>
+            <p><span>Tags</span>${selectedContact.tags.join(', ')}</p>
+          </div>
+          <div class="contact-data-group">
+            <h4>Resumo recente</h4>
+            <p><span>Última mensagem</span>${lastMessage?.text || previewMessage}</p>
+            <p><span>Último horário</span>${lastMessage?.time || '--:--'}</p>
+          </div>
+          <div class="contact-data-group">
+            <h4>Comentários</h4>
+            <p class="muted-text">Não há comentários sobre este usuário.</p>
+          </div>
+        `
+            : '<p>Selecione um contato para ver os detalhes.</p>'
+        }
+      </aside>
     </div>
   `;
 }
