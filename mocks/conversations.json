@@ -1,0 +1,98 @@
+{
+  "c001": [
+    {"id":"m1","direction":"in","text":"Oi! Gostaria de entender os planos.","time":"09:02"},
+    {"id":"m2","direction":"out","text":"Olá, Ana! Posso te ajudar com isso.","time":"09:03"},
+    {"id":"m3","direction":"in","text":"Tem integração com CRM?","time":"09:05"},
+    {"id":"m4","direction":"out","text":"Sim, temos integração nativa.","time":"09:06"},
+    {"id":"m5","direction":"in","text":"Perfeito, vou avaliar internamente.","time":"09:08"},
+    {"id":"m6","direction":"out","text":"Combinado! Qualquer dúvida me chama.","time":"09:09"}
+  ],
+  "c002": [
+    {"id":"m1","direction":"in","text":"Preciso da segunda via da fatura.","time":"10:10"},
+    {"id":"m2","direction":"out","text":"Claro, vou gerar para você.","time":"10:11"},
+    {"id":"m3","direction":"in","text":"Consegue enviar por e-mail também?","time":"10:13"},
+    {"id":"m4","direction":"out","text":"Enviei para seu cadastro agora.","time":"10:14"},
+    {"id":"m5","direction":"in","text":"Recebi, obrigado!","time":"10:15"},
+    {"id":"m6","direction":"out","text":"Disponha, Carlos!","time":"10:16"}
+  ],
+  "c003": [
+    {"id":"m1","direction":"in","text":"Não consigo acessar o painel.","time":"08:40"},
+    {"id":"m2","direction":"out","text":"Você pode tentar redefinir a senha?","time":"08:42"},
+    {"id":"m3","direction":"in","text":"Funcionou!","time":"08:44"},
+    {"id":"m4","direction":"out","text":"Ótimo, ficamos à disposição.","time":"08:45"},
+    {"id":"m5","direction":"in","text":"Obrigada pelo suporte.","time":"08:46"},
+    {"id":"m6","direction":"out","text":"Nós que agradecemos.","time":"08:47"}
+  ],
+  "c004": [
+    {"id":"m1","direction":"in","text":"Quero cancelar meu pedido.","time":"11:01"},
+    {"id":"m2","direction":"out","text":"Posso entender o motivo?","time":"11:02"},
+    {"id":"m3","direction":"in","text":"Prazo muito longo.","time":"11:04"},
+    {"id":"m4","direction":"out","text":"Entendi, seguiremos com o cancelamento.","time":"11:05"},
+    {"id":"m5","direction":"in","text":"Obrigado.","time":"11:06"},
+    {"id":"m6","direction":"out","text":"Cancelamento confirmado.","time":"11:08"}
+  ],
+  "c005": [
+    {"id":"m1","direction":"in","text":"Minha amiga indicou vocês.","time":"12:21"},
+    {"id":"m2","direction":"out","text":"Que ótimo! Seja bem-vinda.","time":"12:23"},
+    {"id":"m3","direction":"in","text":"Tem teste grátis?","time":"12:24"},
+    {"id":"m4","direction":"out","text":"Temos 14 dias gratuitos.","time":"12:25"},
+    {"id":"m5","direction":"in","text":"Quero começar hoje.","time":"12:26"},
+    {"id":"m6","direction":"out","text":"Vou te guiar no cadastro.","time":"12:27"}
+  ],
+  "c006": [
+    {"id":"m1","direction":"in","text":"Meu boleto veio com valor errado.","time":"09:31"},
+    {"id":"m2","direction":"out","text":"Vou revisar agora mesmo.","time":"09:32"},
+    {"id":"m3","direction":"in","text":"Fico no aguardo.","time":"09:33"},
+    {"id":"m4","direction":"out","text":"Corrigimos e reenviamos.","time":"09:36"},
+    {"id":"m5","direction":"in","text":"Perfeito, recebi.","time":"09:37"},
+    {"id":"m6","direction":"out","text":"Qualquer coisa, chame aqui.","time":"09:38"}
+  ],
+  "c007": [
+    {"id":"m1","direction":"in","text":"Como configuro resposta automática?","time":"13:11"},
+    {"id":"m2","direction":"out","text":"Posso te enviar um passo a passo.","time":"13:12"},
+    {"id":"m3","direction":"in","text":"Envia sim!","time":"13:13"},
+    {"id":"m4","direction":"out","text":"1. Acesse configurações...","time":"13:14"},
+    {"id":"m5","direction":"in","text":"Consegui aqui.","time":"13:17"},
+    {"id":"m6","direction":"out","text":"Excelente, Camila!","time":"13:18"}
+  ],
+  "c008": [
+    {"id":"m1","direction":"in","text":"Finalizamos o onboarding.","time":"14:02"},
+    {"id":"m2","direction":"out","text":"Que bom! Como foi a experiência?","time":"14:04"},
+    {"id":"m3","direction":"in","text":"Muito boa, equipe atenciosa.","time":"14:05"},
+    {"id":"m4","direction":"out","text":"Obrigado pelo feedback.","time":"14:06"},
+    {"id":"m5","direction":"in","text":"Vamos indicar para parceiros.","time":"14:07"},
+    {"id":"m6","direction":"out","text":"Ficamos felizes!","time":"14:08"}
+  ],
+  "c009": [
+    {"id":"m1","direction":"in","text":"Ainda não recebi confirmação do pagamento.","time":"15:20"},
+    {"id":"m2","direction":"out","text":"Vou verificar no financeiro.","time":"15:21"},
+    {"id":"m3","direction":"in","text":"Pode me avisar hoje?","time":"15:22"},
+    {"id":"m4","direction":"out","text":"Sim, retorno até 17h.","time":"15:23"},
+    {"id":"m5","direction":"in","text":"Obrigada.","time":"15:24"},
+    {"id":"m6","direction":"out","text":"Por nada!","time":"15:25"}
+  ],
+  "c010": [
+    {"id":"m1","direction":"in","text":"Fechamos com outro fornecedor.","time":"16:40"},
+    {"id":"m2","direction":"out","text":"Entendi, agradecemos a consideração.","time":"16:41"},
+    {"id":"m3","direction":"in","text":"Quem sabe no futuro.","time":"16:42"},
+    {"id":"m4","direction":"out","text":"Seguimos à disposição.","time":"16:43"},
+    {"id":"m5","direction":"in","text":"Obrigado pelo atendimento.","time":"16:44"},
+    {"id":"m6","direction":"out","text":"Conte conosco.","time":"16:45"}
+  ],
+  "c011": [
+    {"id":"m1","direction":"in","text":"Vi vocês no Instagram.","time":"17:10"},
+    {"id":"m2","direction":"out","text":"Legal! Posso te mostrar a plataforma.","time":"17:11"},
+    {"id":"m3","direction":"in","text":"Quero uma demo rápida.","time":"17:12"},
+    {"id":"m4","direction":"out","text":"Tenho agenda amanhã às 10h.","time":"17:13"},
+    {"id":"m5","direction":"in","text":"Confirmado.","time":"17:14"},
+    {"id":"m6","direction":"out","text":"Até amanhã!","time":"17:15"}
+  ],
+  "c012": [
+    {"id":"m1","direction":"in","text":"Quero migrar para plano maior.","time":"18:01"},
+    {"id":"m2","direction":"out","text":"Ótima decisão, Diego.","time":"18:02"},
+    {"id":"m3","direction":"in","text":"Qual a diferença principal?","time":"18:03"},
+    {"id":"m4","direction":"out","text":"Mais usuários e automações avançadas.","time":"18:04"},
+    {"id":"m5","direction":"in","text":"Pode enviar proposta?","time":"18:05"},
+    {"id":"m6","direction":"out","text":"Envio ainda hoje.","time":"18:06"}
+  ]
+}

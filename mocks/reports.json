@@ -1,0 +1,24 @@
+{
+  "kpis": {
+    "totalAtendimentosHoje": 87,
+    "tempoMedioResposta": "2m 14s",
+    "conversasEmAberto": 19,
+    "csat": "94%"
+  },
+  "atendimentosPorHora": [
+    {"label":"09h","value":8},
+    {"label":"10h","value":12},
+    {"label":"11h","value":15},
+    {"label":"12h","value":9},
+    {"label":"13h","value":11},
+    {"label":"14h","value":14},
+    {"label":"15h","value":10},
+    {"label":"16h","value":8}
+  ],
+  "colaboradores": [
+    {"nome":"Mariana Costa","atendimentos":26,"tempoMedio":"1m 58s","csat":"96%"},
+    {"nome":"João Ribeiro","atendimentos":21,"tempoMedio":"2m 35s","csat":"91%"},
+    {"nome":"Carla Menezes","atendimentos":18,"tempoMedio":"2m 11s","csat":"95%"},
+    {"nome":"Rafael Prado","atendimentos":12,"tempoMedio":"2m 42s","csat":"89%"}
+  ]
+}
