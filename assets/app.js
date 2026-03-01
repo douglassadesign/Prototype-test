@@ -43,23 +43,8 @@ const journeys = {
     ]
   },
   comercial: {
-    title: 'Jornada 5 · Comercial Blip',
-    subtitle: 'Product-Led Sales com sinais de adoção orgânica.',
-    screens: [
-      {
-        title: '1) Painel de Inteligência B2B',
-        body: `
-          <section class="panel card">
-            <h3>Penetração por marca</h3>
-            <div class="kpi-grid" style="margin-top:10px;">
-              <div class="kpi"><span class="small">Lojas Marca X</span><strong>3.000</strong></div>
-              <div class="kpi"><span class="small">Franqueados conectados</span><strong>450</strong></div>
-              <div class="kpi"><span class="small">Penetração orgânica</span><strong>15%</strong></div>
-            </div>
-          </section>
-        `
-      }
-    ]
+    title: 'Comercial Blip',
+    subtitle: 'Identifique oportunidades Enterprise a partir da adoção orgânica.'
   }
 };
 
@@ -110,24 +95,15 @@ function renderLanding() {
             <p class="small" style="margin-top:10px;color:#0f766e;">Painel corporativo com descoberta, vínculos, auditoria, governança e upgrade enterprise.</p>
           </a>
 
-          <article class="portal card" data-journey="comercial">
+          <a class="portal card" href="sales.html?step=overview" target="_blank" rel="noopener noreferrer">
             <h3>${journeys.comercial.title}</h3>
             <p>${journeys.comercial.subtitle}</p>
-            <p class="small" style="margin-top:10px;">Jornada em preview resumido</p>
-          </article>
+            <p class="small" style="margin-top:10px;color:#0f766e;">Painel interno de Product-Led Sales Intelligence.</p>
+          </a>
         </section>
       </main>
     </div>
   `;
-
-  document.querySelectorAll('[data-journey]').forEach((el) => {
-    el.addEventListener('click', () => {
-      state.view = 'journey';
-      state.journey = el.dataset.journey;
-      state.screen = 0;
-      render();
-    });
-  });
 }
 
 function renderGenericJourney() {
