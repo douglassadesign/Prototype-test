@@ -278,6 +278,10 @@ function isSelfConnectScenario() {
   return new URL(window.location.href).searchParams.get('scenario') === 'selfconnect';
 }
 
+function getDefaultStep() {
+  return isSelfConnectScenario() ? 'desk' : 'email';
+}
+
 function navigateStep(step) {
   const url = new URL(window.location.href);
   url.searchParams.set('step', step);
@@ -497,6 +501,7 @@ function renderWelcome() {
 
   document.getElementById('startDesk').addEventListener('click', () => {
     localStorage.setItem(storage.onboardingCompleted, 'true');
+    localStorage.setItem(storage.connectPromptDismissed, 'true');
     navigateStep('desk');
   });
 }
@@ -698,7 +703,12 @@ function renderDesk() {
   const selectedId = localStorage.getItem(storage.selectedTicket) || visibleTickets[0]?.id || tickets[0]?.id;
   const selected = visibleTickets.find((t) => t.id === selectedId) || visibleTickets[0] || tickets[0];
 
-  if (!deskModal && !isTrue(storage.connectPromptDismissed) && !isTrue(storage.selfconnectCompleted)) {
+  if (
+    !deskModal &&
+    isSelfConnectScenario() &&
+    !isTrue(storage.connectPromptDismissed) &&
+    !isTrue(storage.selfconnectCompleted)
+  ) {
     deskModal = { type: 'prompt' };
   }
 
@@ -1124,7 +1134,8 @@ function render() {
   initStorage();
 
   const rawStep = getParamStep();
-  const requestedStep = rawStep || 'email';
+  const defaultStep = getDefaultStep();
+  const requestedStep = rawStep || defaultStep;
   const step = guardStep(requestedStep);
 
   if (step !== requestedStep) {
@@ -1135,7 +1146,7 @@ function render() {
   }
 
   if (!rawStep) {
-    navigateStep('email');
+    navigateStep(defaultStep);
     return;
   }
 
@@ -1146,7 +1157,7 @@ function render() {
   if (step === 'welcome') return renderWelcome();
   if (step === 'desk') return renderDesk();
 
-  navigateStep('email');
+  navigateStep(defaultStep);
 }
 
 window.addEventListener('popstate', render);
