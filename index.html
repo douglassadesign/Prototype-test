@@ -3,11 +3,282 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blip CoEx: Central de Comando</title>
+    <title>Blip CoEx · Cenários Interativos</title>
     <link rel="stylesheet" href="assets/styles.css" />
+    <style>
+      body {
+        background: linear-gradient(180deg, #f6f9fc 0%, #eef4fa 100%);
+        color: var(--text);
+      }
+
+      .landing-shell {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 28px 20px 44px;
+      }
+
+      .landing-header {
+        margin-bottom: 22px;
+      }
+
+      .landing-header h1 {
+        font-size: clamp(1.8rem, 3vw, 2.4rem);
+        color: var(--navy);
+        margin-bottom: 8px;
+      }
+
+      .landing-subtitle {
+        font-size: 1.06rem;
+        color: #0f3158;
+        margin-bottom: 10px;
+      }
+
+      .landing-description {
+        color: #334155;
+        line-height: 1.55;
+        max-width: 900px;
+      }
+
+      .scenarios-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      }
+
+      .scenario-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px;
+        box-shadow: var(--shadow);
+        display: grid;
+        gap: 12px;
+      }
+
+      .scenario-card h2 {
+        font-size: 1.2rem;
+        color: var(--navy);
+      }
+
+      .scenario-block {
+        display: grid;
+        gap: 5px;
+      }
+
+      .scenario-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #0369a1;
+        font-weight: 700;
+      }
+
+      .scenario-text {
+        color: #334155;
+        line-height: 1.5;
+        font-size: 0.95rem;
+      }
+
+      .scenario-list {
+        margin: 0;
+        padding-left: 18px;
+        color: #334155;
+        display: grid;
+        gap: 4px;
+        font-size: 0.94rem;
+      }
+
+      .scenario-card .primary-btn {
+        justify-self: start;
+        margin-top: 2px;
+      }
+
+      @media (max-width: 720px) {
+        .landing-shell {
+          padding: 18px 14px 30px;
+        }
+
+        .scenarios-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
-    <script src="assets/app.js" defer></script>
+    <main class="landing-shell">
+      <header class="landing-header">
+        <h1>Blip CoEx · Cenários interativos</h1>
+        <p class="landing-subtitle">Entenda o objetivo de cada fluxo antes de explorar.</p>
+        <p class="landing-description">
+          Blip CoEx conecta números individuais de WhatsApp ao Blip sem mudar a rotina do agente.
+          Abaixo, cada cenário explica contexto, fluxo, problema resolvido, momento de valor e o que demonstra.
+        </p>
+      </header>
+
+      <section class="scenarios-grid" aria-label="Cenários Blip CoEx">
+        <article class="scenario-card">
+          <h2>Convite do gestor</h2>
+          <div class="scenario-block">
+            <span class="scenario-label">Contexto</span>
+            <p class="scenario-text">
+              O gestor já utiliza o Blip Desk para gerenciar atendimentos e convida os agentes da equipe
+              para conectar seus números de WhatsApp.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Fluxo</span>
+            <p class="scenario-text">
+              O agente recebe convite por e-mail, cria acesso, escaneia o QR Code e conecta o número ao Blip.
+              As conversas passam a ser sincronizadas automaticamente sem interromper o uso do WhatsApp.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Aha Moment</span>
+            <p class="scenario-text">
+              O agente percebe que pode continuar usando o WhatsApp normalmente enquanto o Blip organiza
+              automaticamente suas conversas.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Demonstra</span>
+            <ul class="scenario-list">
+              <li>Onboarding simples</li>
+              <li>Coexistência WhatsApp + Blip</li>
+              <li>Sincronização automática</li>
+            </ul>
+          </div>
+          <a class="primary-btn" href="agent.html" target="_blank" rel="noopener">Explorar cenário</a>
+        </article>
+
+        <article class="scenario-card">
+          <h2>Conexão espontânea do agente</h2>
+          <div class="scenario-block">
+            <span class="scenario-label">Contexto</span>
+            <p class="scenario-text">
+              O agente já utiliza o Blip Desk para atender leads do número centralizado da empresa.
+              Ele também usa seu próprio WhatsApp profissional para continuar conversas com clientes.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Fluxo</span>
+            <p class="scenario-text">
+              O Blip sugere a conexão do WhatsApp. O agente conecta seu número e as conversas passam
+              a aparecer automaticamente no Desk.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Aha Moment</span>
+            <p class="scenario-text">
+              O agente percebe que pode centralizar todas as conversas em um único lugar sem mudar sua rotina.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Demonstra</span>
+            <ul class="scenario-list">
+              <li>Adoção bottom-up</li>
+              <li>Integração natural com a rotina</li>
+              <li>Centralização de contatos</li>
+            </ul>
+          </div>
+          <a class="primary-btn" href="agent.html?scenario=selfconnect" target="_blank" rel="noopener">Explorar cenário</a>
+        </article>
+
+        <article class="scenario-card">
+          <h2>Gestão da equipe</h2>
+          <div class="scenario-block">
+            <span class="scenario-label">Contexto</span>
+            <p class="scenario-text">
+              O gestor precisa organizar a equipe e acompanhar quem já conectou o WhatsApp.
+              Também precisa entender a performance dos atendimentos.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Fluxo</span>
+            <p class="scenario-text">
+              O gestor cadastra agentes, envia convites e acompanha o status das conexões.
+              Também visualiza relatórios e identifica oportunidades de melhoria.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Aha Moment</span>
+            <p class="scenario-text">
+              O gestor passa a ter visibilidade imediata sobre os atendimentos e os números conectados.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Demonstra</span>
+            <ul class="scenario-list">
+              <li>Controle da equipe</li>
+              <li>Monitoramento de conexões</li>
+              <li>Relatórios básicos</li>
+            </ul>
+          </div>
+          <a class="primary-btn" href="manager.html" target="_blank" rel="noopener">Explorar cenário</a>
+        </article>
+
+        <article class="scenario-card">
+          <h2>Governança corporativa</h2>
+          <div class="scenario-block">
+            <span class="scenario-label">Contexto</span>
+            <p class="scenario-text">
+              Grandes empresas possuem muitos números WhatsApp usando a marca sem controle centralizado.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Fluxo</span>
+            <p class="scenario-text">
+              A matriz identifica números usando a marca, reconhece vínculos e monitora qualidade das conversas.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Aha Moment</span>
+            <p class="scenario-text">
+              A empresa passa a ter governança sobre números que antes estavam invisíveis.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Demonstra</span>
+            <ul class="scenario-list">
+              <li>Descoberta de Shadow WhatsApp</li>
+              <li>Controle corporativo</li>
+              <li>Auditoria de qualidade</li>
+            </ul>
+          </div>
+          <a class="primary-btn" href="matrix.html" target="_blank" rel="noopener">Explorar cenário</a>
+        </article>
+
+        <article class="scenario-card">
+          <h2>Inteligência comercial Blip</h2>
+          <div class="scenario-block">
+            <span class="scenario-label">Contexto</span>
+            <p class="scenario-text">
+              Blip monitora a adoção orgânica da solução em diferentes empresas.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Fluxo</span>
+            <p class="scenario-text">
+              O time comercial identifica empresas com alto potencial e gera propostas Enterprise
+              baseadas em dados reais.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Aha Moment</span>
+            <p class="scenario-text">
+              A adoção espontânea se transforma em oportunidades comerciais Enterprise.
+            </p>
+          </div>
+          <div class="scenario-block">
+            <span class="scenario-label">Demonstra</span>
+            <ul class="scenario-list">
+              <li>Product-Led Growth</li>
+              <li>Identificação de oportunidades</li>
+              <li>Geração de ROI</li>
+            </ul>
+          </div>
+          <a class="primary-btn" href="sales.html" target="_blank" rel="noopener">Explorar cenário</a>
+        </article>
+      </section>
+    </main>
   </body>
 </html>
