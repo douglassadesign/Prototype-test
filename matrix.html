@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matriz / Governança · Blip CoEx</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <div id="matrixApp"></div>
+
+    <script>
+      const STEP_ORDER = ['discovery', 'linking', 'qa', 'governance', 'enterprise'];
+      const STEP_LABELS = {
+        discovery: 'Descoberta',
+        linking: 'Vínculos',
+        qa: 'Auditoria IA',
+        governance: 'Governança',
+        enterprise: 'Enterprise'
+      };
+
+      const linkingRows = [
+        {
+          number: '+55 31 98888-1111',
+          owner: 'Carlos Silva',
+          location: 'Franqueado BH',
+          status: 'Self-connected'
+        },
+        {
+          number: '+55 21 97777-2222',
+          owner: 'Ana Souza',
+          location: 'Loja Rio',
+          status: 'Governado'
+        },
+        {
+          number: '+55 11 96666-3333',
+          owner: 'Desconhecido',
+          location: 'São Paulo',
+          status: 'Detectado'
+        }
+      ];
+
+      const app = document.getElementById('matrixApp');
+
+      function readStep() {
+        const step = new URLSearchParams(window.location.search).get('step');
+        return STEP_ORDER.includes(step) ? step : 'discovery';
+      }
+
+      function statusBadge(status) {
+        const classByStatus = {
+          Detectado: 'warning',
+          'Self-connected': 'info',
+          Governado: 'success',
+          Externo: 'danger'
+        };
+        return `<span class="badge ${classByStatus[status] || 'info'}">${status}</span>`;
+      }
+
+      function goToStep(step) {
+        window.location.search = `?step=${step}`;
+      }
+
+      function renderDiscovery() {
+        return `
+          <section class="card panel">
+            <h2>Descoberta de WhatsApp não governado</h2>
+            <p class="small" style="margin-top:8px;">Identificamos números usando a marca XPTO no WhatsApp.</p>
+
+            <div class="funnel matrix-funnel">
+              <div class="funnel-step">Total lojas/franqueados no mercado: <strong>3000</strong></div>
+              <div class="funnel-arrow">↓</div>
+              <div class="funnel-step">Números detectados usando a marca: <strong>870</strong></div>
+              <div class="funnel-arrow">↓</div>
+              <div class="funnel-step">Números conectados ao Blip: <strong>142</strong></div>
+              <div class="funnel-arrow">↓</div>
+              <div class="funnel-step">Números governados pela matriz: <strong>48</strong></div>
+            </div>
+
+            <div class="card matrix-list-card">
+              <h3>Distribuição por região</h3>
+              <ul class="mini-list">
+                <li>Sudeste — 420 números</li>
+                <li>Sul — 180 números</li>
+                <li>Nordeste — 150 números</li>
+                <li>Centro-Oeste — 70 números</li>
+                <li>Norte — 50 números</li>
+              </ul>
+            </div>
+
+            <p class="small" style="margin-top:12px;">Dados estimados a partir de análise de mercado e conexões CoEx.</p>
+            <p class="small">Histórico sincronizado: últimos 6 meses via Meta API.</p>
+
+            <div class="note">
+              Mais de 80% dos números detectados ainda não possuem governança corporativa.
+            </div>
+
+            <button class="primary-btn" data-goto="linking" style="margin-top:14px;">Ver números detectados</button>
+          </section>
+        `;
+      }
+
+      function renderLinking() {
+        return `
+          <section class="card panel">
+            <h2>Central de Vínculo de Números</h2>
+            <p class="small" style="margin-top:8px;">Reconheça quais números fazem parte da rede oficial.</p>
+
+            <div style="overflow:auto; margin-top:14px;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Responsável</th>
+                    <th>Localização</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${linkingRows
+                    .map(
+                      (row, idx) => `
+                    <tr>
+                      <td>${row.number}</td>
+                      <td>${row.owner}</td>
+                      <td>${row.location}</td>
+                      <td data-status-cell="${idx}">${statusBadge(row.status)}</td>
+                      <td data-action-cell="${idx}">
+                        ${
+                          row.status === 'Governado'
+                            ? statusBadge('Governado')
+                            : `<div class="inline-badges" style="margin-top:0;">
+                                <button class="ghost-btn matrix-action" data-action="recognize" data-row="${idx}">Reconhecer vínculo</button>
+                                <button class="ghost-btn matrix-action" data-action="external" data-row="${idx}">${row.status === 'Self-connected' ? 'Desconhecido' : 'Marcar como externo'}</button>
+                              </div>`
+                        }
+                      </td>
+                    </tr>
+                  `
+                    )
+                    .join('')}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card matrix-list-card" style="margin-top:14px;">
+              Números conectados diretamente pelos agentes aparecem como Self-connected até validação.
+            </div>
+            <p class="small" style="margin-top:10px;">Agentes continuam usando WhatsApp normalmente; Blip espelha as conversas.</p>
+            <p class="small">Matriz possui controle superior à franquia.</p>
+          </section>
+        `;
+      }
+
+      function renderQa() {
+        return `
+          <section class="card panel">
+            <h2>Auditoria automatizada de conversas</h2>
+            <p class="small" style="margin-top:8px;">IA identifica riscos e desvios de padrão.</p>
+
+            <div class="matrix-alert-grid">
+              <article class="alert-card matrix-alert high">
+                <h3>Desvio de política comercial</h3>
+                <p class="small" style="color:inherit; margin-top:8px;">Franquia Sul oferecendo desconto não autorizado.</p>
+                <p class="matrix-risk">Risco: Alto</p>
+                <button class="ghost-btn" style="margin-top:8px;">Ver conversa</button>
+              </article>
+
+              <article class="alert-card matrix-alert medium">
+                <h3>Tempo de resposta elevado</h3>
+                <p class="small" style="color:inherit; margin-top:8px;">Equipe Nordeste com TMR 2x acima da média.</p>
+                <p class="matrix-risk">Risco: Médio</p>
+              </article>
+
+              <article class="alert-card matrix-alert low">
+                <h3>Atendimento incompleto</h3>
+                <p class="small" style="color:inherit; margin-top:8px;">Cliente solicitou orçamento e não recebeu retorno.</p>
+                <p class="matrix-risk">Risco: Baixo</p>
+              </article>
+            </div>
+
+            <div class="card matrix-list-card" style="margin-top:12px;">
+              A IA analisa automaticamente conversas sincronizadas via CoEx.<br />
+              IA prioriza e identifica riscos automaticamente.
+            </div>
+
+            <div class="kpi-grid" style="margin-top:12px;">
+              <div class="kpi"><span class="small">Conversas analisadas</span><strong>8.420</strong></div>
+              <div class="kpi"><span class="small">Riscos detectados</span><strong>37</strong></div>
+              <div class="kpi"><span class="small">Conformidade média</span><strong>92%</strong></div>
+            </div>
+          </section>
+        `;
+      }
+
+      function renderGovernance() {
+        return `
+          <section class="card panel">
+            <h2>Governança corporativa</h2>
+            <p class="small" style="margin-top:8px;">Controle centralizado sobre WhatsApp da rede.</p>
+
+            <div style="overflow:auto; margin-top:14px;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Permissão</th>
+                    <th>Matriz</th>
+                    <th>Franqueado</th>
+                    <th>Agente</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Visualizar conversas</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                  <tr><td>Aprovar números</td><td>✓</td><td>-</td><td>-</td></tr>
+                  <tr><td>Bloquear números</td><td>✓</td><td>-</td><td>-</td></tr>
+                  <tr><td>Auditoria QA</td><td>✓</td><td>opcional</td><td>-</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="small" style="margin-top:12px;">Matriz possui visibilidade completa e poder de veto sobre a rede.</p>
+            <p class="small">Matriz possui controle superior à franquia.</p>
+
+            <div class="matrix-architecture">
+              <div class="card panel">WhatsApp Agente</div>
+              <div class="matrix-arrow">↓</div>
+              <div class="card panel">CoEx API</div>
+              <div class="matrix-arrow">↓</div>
+              <div class="card panel">Blip</div>
+              <div class="matrix-arrow">↓</div>
+              <div class="card panel">Governança Corporativa</div>
+            </div>
+          </section>
+        `;
+      }
+
+      function renderEnterprise() {
+        return `
+          <section class="card panel">
+            <h2>Governança Enterprise</h2>
+            <p class="small" style="margin-top:8px;">Centralize a governança de toda a rede.</p>
+
+            <div class="kpi-grid" style="margin-top:14px;">
+              <div class="kpi"><span class="small">Números conectados</span><strong>142</strong></div>
+              <div class="kpi"><span class="small">Números detectados</span><strong>870</strong></div>
+              <div class="kpi"><span class="small">Potencial de expansão</span><strong>+728</strong></div>
+            </div>
+
+            <div class="card matrix-list-card" style="margin-top:14px;">
+              <h3>Impacto estimado de ROI</h3>
+              <ul class="mini-list">
+                <li>Redução média de TMR: <strong>-28%</strong></li>
+                <li>Aumento médio de conversão: <strong>+17%</strong></li>
+                <li>Redução de riscos: <strong>-65%</strong></li>
+              </ul>
+            </div>
+
+            <button class="primary-btn" id="openEnterpriseModal" style="margin-top:14px;">Solicitar proposta Enterprise</button>
+          </section>
+        `;
+      }
+
+      function renderStep(step) {
+        if (step === 'linking') return renderLinking();
+        if (step === 'qa') return renderQa();
+        if (step === 'governance') return renderGovernance();
+        if (step === 'enterprise') return renderEnterprise();
+        return renderDiscovery();
+      }
+
+      function render() {
+        const step = readStep();
+        app.innerHTML = `
+          <div class="matrix-page">
+            <aside class="matrix-sidebar">
+              <h2>Matriz / Governança</h2>
+              ${STEP_ORDER.map((item) => `<a href="?step=${item}" class="matrix-nav-item ${item === step ? 'active' : ''}">${STEP_LABELS[item]}</a>`).join('')}
+            </aside>
+
+            <main class="matrix-main">
+              <header class="topbar matrix-topbar">
+                <h1>Marca XPTO • Painel Corporativo</h1>
+                <span class="meta">Marca XPTO · Admin Corporativo</span>
+              </header>
+              <div class="matrix-content">
+                ${renderStep(step)}
+              </div>
+            </main>
+          </div>
+          <div class="matrix-toast" id="toast"></div>
+
+          <div class="matrix-modal-backdrop" id="enterpriseModal">
+            <div class="card panel matrix-modal">
+              <h3>Fale com um especialista</h3>
+              <form id="enterpriseForm" class="matrix-form">
+                <label>Nome<input required /></label>
+                <label>Empresa<input required /></label>
+                <label>Email<input type="email" required /></label>
+                <label>Número de funcionários<input required /></label>
+                <label>Mensagem<textarea rows="3" required></textarea></label>
+                <div class="matrix-modal-actions">
+                  <button type="button" class="ghost-btn" id="closeModal">Fechar</button>
+                  <button type="submit" class="primary-btn">Enviar</button>
+                </div>
+              </form>
+              <p class="small" id="enterpriseSuccess"></p>
+            </div>
+          </div>
+        `;
+
+        document.querySelectorAll('.matrix-action').forEach((button) => {
+          button.addEventListener('click', () => {
+            const rowIndex = Number(button.dataset.row);
+            const action = button.dataset.action;
+            linkingRows[rowIndex].status = action === 'recognize' ? 'Governado' : 'Externo';
+            render();
+            showToast(
+              action === 'recognize'
+                ? 'Número reconhecido como parte da rede.'
+                : 'Número marcado como externo à rede.'
+            );
+          });
+        });
+
+        const cta = document.getElementById('openEnterpriseModal');
+        if (cta) {
+          cta.addEventListener('click', () => {
+            document.getElementById('enterpriseModal').classList.add('visible');
+          });
+        }
+
+        const closeModal = document.getElementById('closeModal');
+        if (closeModal) {
+          closeModal.addEventListener('click', () => {
+            document.getElementById('enterpriseModal').classList.remove('visible');
+          });
+        }
+
+        const form = document.getElementById('enterpriseForm');
+        if (form) {
+          form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            document.getElementById('enterpriseSuccess').textContent =
+              'Solicitação enviada. Nosso time entrará em contato.';
+            form.reset();
+          });
+        }
+
+        document.querySelectorAll('[data-goto]').forEach((button) => {
+          button.addEventListener('click', () => goToStep(button.dataset.goto));
+        });
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('visible');
+        setTimeout(() => toast.classList.remove('visible'), 2200);
+      }
+
+      render();
+    </script>
+  </body>
+</html>
