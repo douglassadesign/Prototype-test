@@ -5,8 +5,10 @@ const storage = {
   whatsappConnected: 'blip_whatsappConnected',
   onboardingCompleted: 'blip_onboardingCompleted',
   inviteContext: 'blip_inviteContext',
-  selectedConversation: 'blip_selected_conversation',
-  conversations: 'blip_agent_conversations'
+  selectedTicket: 'blip_selected_ticket',
+  deskMode: 'blip_desk_mode',
+  ticketFilter: 'blip_ticket_filter',
+  tickets: 'blip_agent_tickets'
 };
 
 const inviteContext = {
@@ -18,59 +20,192 @@ const inviteContext = {
   agentPhone: '+55 31 99999-8888'
 };
 
-const baseConversations = [
+const queues = [
+  { name: 'Qualificação', icon: '🔵', avg: '2h 15min' },
+  { name: 'Apresentação da Solução', icon: '🟣', avg: '4h 30min' },
+  { name: 'Quebra de Objeções', icon: '🟠', avg: '1h 45min' },
+  { name: 'Aprovação de Crédito', icon: '🟡', avg: '6h 20min' },
+  { name: 'Assinatura de Contrato', icon: '🟢', avg: '3h 10min' },
+  { name: 'Ganho', icon: '✅', avg: '0h 40min' },
+  { name: 'Perdido', icon: '❌', avg: '0h 30min' }
+];
+
+const baseTickets = [
   {
-    id: 'c1',
-    name: 'Nicolas Torres',
-    phone: '+55 31 98888-1001',
-    status: 'Novos',
-    tag: 'Lead quente',
+    id: '200',
+    contactName: 'Nicolas Torres',
+    queue: 'Qualificação',
+    bot: 'Bot Vendas',
+    area: 'Vendas',
     time: '10:41',
+    unread: true,
+    statusBadge: 'Novo',
+    iaSignal: 'Lead quente',
     score: 85,
     snippet: 'Estou aguardando o retorno sobre a proposta.',
+    contact: {
+      phone: '+55 31 98888-1001',
+      email: 'nicolas.torres@email.com',
+      city: 'Belo Horizonte',
+      plan: 'Enterprise',
+      gender: 'Masculino'
+    },
     messages: [
       { dir: 'in', text: 'Estou aguardando o retorno sobre a proposta.', time: '10:41' },
       { dir: 'out', text: 'Claro! Vou verificar isso para você.', time: '10:46' }
     ]
   },
   {
-    id: 'c2',
-    name: 'Gustavo Silva',
-    phone: '+55 31 98888-1002',
-    status: 'Em atendimento',
-    tag: 'Pendência',
-    time: '11:20',
+    id: '201',
+    contactName: 'Gustavo Silva',
+    queue: 'Qualificação',
+    bot: 'Bot Suporte',
+    area: 'Suporte',
+    time: '17:54',
+    unread: false,
+    statusBadge: '',
+    iaSignal: 'Pendência',
     score: 71,
-    snippet: 'Consegue me enviar o contrato por e-mail?',
-    messages: [{ dir: 'in', text: 'Consegue me enviar o contrato por e-mail?', time: '11:20' }]
+    snippet: 'Quando posso agendar a reunião?',
+    contact: {
+      phone: '+55 31 98888-1002',
+      email: 'gustavo.silva@email.com',
+      city: 'Contagem',
+      plan: 'Pro',
+      gender: 'Masculino'
+    },
+    messages: [{ dir: 'in', text: 'Quando posso agendar a reunião?', time: '17:54' }]
   },
   {
-    id: 'c3',
-    name: 'Priscila Figueredo',
-    phone: '+55 31 98888-1003',
-    status: 'Follow-up',
-    tag: 'IA sugere contato 2h',
-    time: '09:49',
-    score: 78,
-    snippet: 'Obrigada pelo atendimento!',
-    messages: [{ dir: 'in', text: 'Obrigada pelo atendimento!', time: '09:49' }]
+    id: '208',
+    contactName: 'Oscar Evangelista',
+    queue: 'Apresentação da Solução',
+    bot: 'Bot Geral',
+    area: 'Financeiro',
+    time: '19:17',
+    unread: true,
+    statusBadge: 'Novo',
+    iaSignal: 'IA sugere contato 2h',
+    score: 64,
+    snippet: 'Preciso de ajuda com meu cadastro',
+    contact: {
+      phone: '+55 31 98888-1208',
+      email: 'oscar.evangelista@email.com',
+      city: 'Betim',
+      plan: 'Pro',
+      gender: 'Masculino'
+    },
+    messages: [{ dir: 'in', text: 'Preciso de ajuda com meu cadastro', time: '19:17' }]
   },
   {
-    id: 'c4',
-    name: 'Fernanda Ramos',
-    phone: '+55 31 98888-1004',
-    status: 'Fechado',
-    tag: 'Fechado',
-    time: '08:33',
+    id: '214',
+    contactName: 'Eduardo Queiroz',
+    queue: 'Quebra de Objeções',
+    bot: 'Bot Geral',
+    area: 'Pós-venda',
+    time: '08:52',
+    unread: false,
+    statusBadge: '',
+    iaSignal: 'Lead quente',
+    score: 77,
+    snippet: 'Ainda tenho dúvidas sobre o valor.',
+    contact: {
+      phone: '+55 31 98888-1214',
+      email: 'eduardo.queiroz@email.com',
+      city: 'Nova Lima',
+      plan: 'Enterprise',
+      gender: 'Masculino'
+    },
+    messages: [{ dir: 'in', text: 'Ainda tenho dúvidas sobre o valor.', time: '08:52' }]
+  },
+  {
+    id: '220',
+    contactName: 'Larissa Braga',
+    queue: 'Aprovação de Crédito',
+    bot: 'Bot Geral',
+    area: 'Suporte',
+    time: '12:55',
+    unread: false,
+    statusBadge: '',
+    iaSignal: 'Pendência',
+    score: 68,
+    snippet: 'Vocês têm desconto para pagamento à vista?',
+    contact: {
+      phone: '+55 31 98888-1220',
+      email: 'larissa.braga@email.com',
+      city: 'Belo Horizonte',
+      plan: 'Standard',
+      gender: 'Feminino'
+    },
+    messages: [{ dir: 'in', text: 'Vocês têm desconto para pagamento à vista?', time: '12:55' }]
+  },
+  {
+    id: '226',
+    contactName: 'Fernanda Ramos',
+    queue: 'Assinatura de Contrato',
+    bot: 'Bot Geral',
+    area: 'Pós-venda',
+    time: '16:55',
+    unread: false,
+    statusBadge: '',
+    iaSignal: 'Lead quente',
     score: 92,
+    snippet: 'Quando posso agendar a reunião?',
+    contact: {
+      phone: '+55 31 98888-1226',
+      email: 'fernanda.ramos@email.com',
+      city: 'Lagoa Santa',
+      plan: 'Enterprise',
+      gender: 'Feminino'
+    },
+    messages: [{ dir: 'in', text: 'Quando posso agendar a reunião?', time: '16:55' }]
+  },
+  {
+    id: '231',
+    contactName: 'Gustavo Mello',
+    queue: 'Ganho',
+    bot: 'Bot Vendas',
+    area: 'Vendas',
+    time: '09:31',
+    unread: false,
+    statusBadge: '',
+    iaSignal: 'Ganho',
+    score: 95,
     snippet: 'Fechamos, pode seguir com o pedido.',
-    messages: [{ dir: 'in', text: 'Fechamos, pode seguir com o pedido.', time: '08:33' }]
+    contact: {
+      phone: '+55 31 98888-1231',
+      email: 'gustavo.mello@email.com',
+      city: 'Sete Lagoas',
+      plan: 'Enterprise',
+      gender: 'Masculino'
+    },
+    messages: [{ dir: 'in', text: 'Fechamos, pode seguir com o pedido.', time: '09:31' }]
+  },
+  {
+    id: '234',
+    contactName: 'André Costa',
+    queue: 'Perdido',
+    bot: 'Bot Geral',
+    area: 'Suporte',
+    time: '15:07',
+    unread: false,
+    statusBadge: '',
+    iaSignal: 'Perdido',
+    score: 23,
+    snippet: 'Vou adiar essa decisão por enquanto.',
+    contact: {
+      phone: '+55 31 98888-1234',
+      email: 'andre.costa@email.com',
+      city: 'Ribeirão das Neves',
+      plan: 'Basic',
+      gender: 'Masculino'
+    },
+    messages: [{ dir: 'in', text: 'Vou adiar essa decisão por enquanto.', time: '15:07' }]
   }
 ];
 
 function getParamStep() {
-  const url = new URL(window.location.href);
-  return url.searchParams.get('step');
+  return new URL(window.location.href).searchParams.get('step');
 }
 
 function navigateStep(step) {
@@ -84,22 +219,26 @@ function initStorage() {
   if (!localStorage.getItem(storage.inviteContext)) {
     localStorage.setItem(storage.inviteContext, JSON.stringify(inviteContext));
   }
-
-  if (!localStorage.getItem(storage.conversations)) {
-    localStorage.setItem(storage.conversations, JSON.stringify(baseConversations));
+  if (!localStorage.getItem(storage.tickets)) {
+    localStorage.setItem(storage.tickets, JSON.stringify(baseTickets));
   }
-
-  if (!localStorage.getItem(storage.selectedConversation)) {
-    localStorage.setItem(storage.selectedConversation, 'c1');
+  if (!localStorage.getItem(storage.selectedTicket)) {
+    localStorage.setItem(storage.selectedTicket, '200');
+  }
+  if (!localStorage.getItem(storage.deskMode)) {
+    localStorage.setItem(storage.deskMode, 'lista');
+  }
+  if (!localStorage.getItem(storage.ticketFilter)) {
+    localStorage.setItem(storage.ticketFilter, 'todos');
   }
 }
 
-function getConversations() {
-  return JSON.parse(localStorage.getItem(storage.conversations)) || [];
+function getTickets() {
+  return JSON.parse(localStorage.getItem(storage.tickets)) || [];
 }
 
-function saveConversations(data) {
-  localStorage.setItem(storage.conversations, JSON.stringify(data));
+function saveTickets(data) {
+  localStorage.setItem(storage.tickets, JSON.stringify(data));
 }
 
 function isTrue(key) {
@@ -275,10 +414,18 @@ function renderWelcome() {
   });
 }
 
+function queueCount(tickets, queueName) {
+  return tickets.filter((t) => t.queue === queueName).length;
+}
+
 function renderDesk() {
-  const conversations = getConversations();
-  const selectedId = localStorage.getItem(storage.selectedConversation) || conversations[0]?.id;
-  const selected = conversations.find((c) => c.id === selectedId) || conversations[0];
+  const tickets = getTickets();
+  const mode = localStorage.getItem(storage.deskMode) || 'lista';
+  const filter = localStorage.getItem(storage.ticketFilter) || 'todos';
+  const selectedId = localStorage.getItem(storage.selectedTicket) || tickets[0]?.id;
+  const selected = tickets.find((t) => t.id === selectedId) || tickets[0];
+
+  const visibleTickets = filter === 'nao_lidos' ? tickets.filter((t) => t.unread) : tickets;
 
   app.innerHTML = `
     <div class="agent-fullscreen desk-shell">
@@ -289,145 +436,237 @@ function renderDesk() {
         <button class="desk-menu">⚙️ <span>Configurações</span></button>
       </aside>
 
-      <div class="desk-main">
-        <section class="desk-col col-left">
-          <input class="search" placeholder="Buscar por nome ou telefone..." />
-          <div class="status-row"><span>Novos</span><strong>${conversations.filter((c) => c.status === 'Novos').length}</strong></div>
-          <div class="status-row"><span>Em atendimento</span><strong>${conversations.filter((c) => c.status === 'Em atendimento').length}</strong></div>
-          <div class="status-row"><span>Follow-up</span><strong>${conversations.filter((c) => c.status === 'Follow-up').length}</strong></div>
-          <div class="status-row"><span>Fechado</span><strong>${conversations.filter((c) => c.status === 'Fechado').length}</strong></div>
-        </section>
-
-        <section class="desk-col col-middle">
+      <div class="desk-main-wrapper">
+        <header class="desk-internal-topbar">
+          <h2>Atendimentos</h2>
           <div class="view-toggle">
-            <button class="ghost-btn active-mode" id="btnLista">Lista</button>
-            <button class="ghost-btn" id="btnKanban">Kanban</button>
+            <button class="ghost-btn ${mode === 'lista' ? 'active-mode' : ''}" id="btnLista">Lista</button>
+            <button class="ghost-btn ${mode === 'kanban' ? 'active-mode' : ''}" id="btnKanban">Kanban</button>
           </div>
+        </header>
 
-          <div id="listView" class="conversation-list">
-            ${conversations
-              .map(
-                (c) => `
-                  <article class="conversation-item ${c.id === selected.id ? 'active' : ''}" data-conversation="${c.id}">
-                    <div>
-                      <strong>${c.name}</strong>
-                      <p>${c.snippet}</p>
-                    </div>
-                    <div class="conv-meta">
-                      <small>${c.time}</small>
-                      <span class="badge info">${c.tag}</span>
-                    </div>
-                  </article>
-                `
-              )
-              .join('')}
-          </div>
+        ${
+          mode === 'lista'
+            ? `
+              <section class="desk-main list-layout">
+                <aside class="desk-col col-left">
+                  <input class="search" placeholder="Buscar tickets..." />
 
-          <div id="kanbanView" class="kanban-board" style="display:none;">
-            ${['Novos', 'Em atendimento', 'Follow-up', 'Fechado']
-              .map(
-                (status) => `
-                  <div class="kanban-col">
-                    <h4>${status}</h4>
-                    ${conversations
-                      .filter((c) => c.status === status)
+                  <div class="filter-row">
+                    <button class="pill ${filter === 'todos' ? 'active' : ''}" id="filterTodos">Todos</button>
+                    <button class="pill ${filter === 'nao_lidos' ? 'active' : ''}" id="filterNaoLidos">Não lidos</button>
+                  </div>
+
+                  <div class="queue-tree">
+                    ${queues
+                      .map((q) => {
+                        const queueTickets = visibleTickets.filter((t) => t.queue === q.name);
+                        const preview = queueTickets.slice(0, 3);
+                        return `
+                        <div class="queue-group">
+                          <div class="queue-title">${q.icon} ${q.name} <span>${queueCount(visibleTickets, q.name)}</span></div>
+                          ${
+                            preview.length
+                              ? preview
+                                  .map(
+                                    (t) => `
+                                <button class="ticket-row ${selected?.id === t.id ? 'active' : ''}" data-ticket="${t.id}">
+                                  <div>
+                                    <strong>${t.contactName}</strong>
+                                    <small>#${t.id} · ${t.area}</small>
+                                  </div>
+                                  <small>${t.time}</small>
+                                </button>
+                              `
+                                  )
+                                  .join('')
+                              : '<p class="small queue-empty">Sem tickets neste filtro.</p>'
+                          }
+                        </div>
+                      `;
+                      })
+                      .join('')}
+                  </div>
+                </aside>
+
+                <main class="desk-col col-middle">
+                  <div class="chat-head">
+                    <strong>${selected.contactName}</strong>
+                    <small>#${selected.id} · ${selected.area}</small>
+                  </div>
+
+                  <div class="chat-thread" id="chatThread">
+                    ${selected.messages
                       .map(
-                        (c) => `
-                          <button class="lead-card kanban-card" data-conversation="${c.id}" data-status="${status}">
-                            <strong>${c.name}</strong>
-                            <span class="small">${c.snippet}</span>
-                          </button>
-                        `
+                        (m) =>
+                          `<div class="message ${m.dir === 'out' ? 'outbound' : 'inbound'}"><p>${m.text}</p><small>${m.time}</small></div>`
                       )
                       .join('')}
                   </div>
-                `
-              )
-              .join('')}
-          </div>
-        </section>
 
-        <section class="desk-col col-right">
-          <h3>${selected.name}</h3>
-          <p class="small">${selected.phone}</p>
-          <div class="inline-badges">
-            <span class="badge warning">Triagem IA antes do humano</span>
-            <span class="badge info">Score de fechamento: ${selected.score}%</span>
-          </div>
+                  <form id="sendForm" class="message-form">
+                    <input id="sendInput" placeholder="Escreva uma mensagem..." required />
+                    <button class="primary-btn" type="submit">Enviar</button>
+                  </form>
+                </main>
 
-          <div class="insights-box">
-            <p><strong>Insight IA:</strong> Melhor horário de contato: tarde</p>
-            <p><strong>Sugestão:</strong> fazer follow-up em 2h</p>
-            <p class="small">Coexistência ativa: WhatsApp continua no celular.</p>
-            <p class="small">Sincronização: últimos 6 meses via Meta API.</p>
-          </div>
+                <aside class="desk-col col-right">
+                  <div class="contact-header">
+                    <div class="avatar-circle">${selected.contactName[0]}</div>
+                    <div>
+                      <strong>${selected.contactName}</strong>
+                      <p class="small">ID: #${selected.id}</p>
+                    </div>
+                  </div>
 
-          <div class="chat-thread" id="chatThread">
-            ${selected.messages
-              .map((m) => `<div class="message ${m.dir === 'out' ? 'outbound' : 'inbound'}"><p>${m.text}</p><small>${m.time}</small></div>`)
-              .join('')}
-          </div>
+                  <h4>DADOS DO CONTATO</h4>
+                  <div class="data-grid small">
+                    <p><span>E-mail</span><strong>${selected.contact.email}</strong></p>
+                    <p><span>Telefone</span><strong>${selected.contact.phone}</strong></p>
+                    <p><span>Cidade</span><strong>${selected.contact.city}</strong></p>
+                    <p><span>Plano</span><strong>${selected.contact.plan}</strong></p>
+                    <p><span>Gênero</span><strong>${selected.contact.gender}</strong></p>
+                  </div>
 
-          <form id="sendForm" class="message-form">
-            <input id="sendInput" placeholder="Escreva uma mensagem..." required />
-            <button class="primary-btn" type="submit">Enviar</button>
-          </form>
+                  <h4>ATENDIMENTO</h4>
+                  <div class="data-grid small">
+                    <p><span>Fila</span><strong>${selected.area}</strong></p>
+                    <p><span>Bot</span><strong>${selected.bot}</strong></p>
+                    <p><span>Status</span><strong>${selected.statusBadge || 'Em andamento'}</strong></p>
+                  </div>
 
-          <div class="banner-upsell subtle">
-            Automatize respostas repetitivas com o Blip Desk + IA.
-            <button class="ghost-btn" style="margin-top:8px;">Solicitar upgrade ao gestor</button>
-          </div>
-        </section>
+                  <div class="insights-box">
+                    <p><strong>Insights IA</strong></p>
+                    <p>Melhor horário de contato: tarde</p>
+                    <p>Score de fechamento: ${selected.score}%</p>
+                    <p>Sugestão: fazer follow-up em 2h</p>
+                  </div>
+
+                  <p class="small">Coexistência ativa: WhatsApp continua no celular.</p>
+                  <p class="small">Sincronização: últimos 6 meses via Meta API.</p>
+
+                  <div class="banner-upsell subtle">
+                    Automatize respostas repetitivas com o Blip Desk + IA.
+                    <button class="ghost-btn" style="margin-top:8px;">Solicitar upgrade ao gestor</button>
+                  </div>
+                </aside>
+              </section>
+            `
+            : `
+              <section class="kanban-mode-wrap">
+                <div class="kanban-board desk-kanban-full">
+                  ${queues
+                    .map((q) => {
+                      const cards = tickets.filter((t) => t.queue === q.name);
+                      return `
+                      <div class="kanban-col">
+                        <h4>${q.icon} ${q.name} <span class="count-pill">${cards.length}</span></h4>
+                        <p class="small">Tempo médio: ${q.avg}</p>
+                        ${cards
+                          .map(
+                            (c) => `
+                            <button class="kanban-desk-card" data-open-ticket="${c.id}">
+                              <div class="card-top">
+                                <strong>${c.contactName}</strong>
+                                <small>${c.time}</small>
+                              </div>
+                              <p>${c.snippet}</p>
+                              <small>#${c.id} · ${c.bot} · ${c.area}</small>
+                              <div class="inline-badges" style="margin-top:8px;">
+                                ${c.statusBadge ? `<span class="badge info">${c.statusBadge}</span>` : ''}
+                                <span class="badge warning">${c.iaSignal}</span>
+                              </div>
+                            </button>
+                          `
+                          )
+                          .join('')}
+                      </div>
+                    `;
+                    })
+                    .join('')}
+                </div>
+              </section>
+            `
+        }
+
+        <div class="toast" id="deskToast" hidden></div>
       </div>
     </div>
   `;
 
-  document.querySelectorAll('[data-conversation]').forEach((el) => {
-    el.addEventListener('click', () => {
-      localStorage.setItem(storage.selectedConversation, el.dataset.conversation);
+  document.getElementById('btnLista').addEventListener('click', () => {
+    localStorage.setItem(storage.deskMode, 'lista');
+    renderDesk();
+  });
+
+  document.getElementById('btnKanban').addEventListener('click', () => {
+    localStorage.setItem(storage.deskMode, 'kanban');
+    renderDesk();
+  });
+
+  const filterTodos = document.getElementById('filterTodos');
+  if (filterTodos) {
+    filterTodos.addEventListener('click', () => {
+      localStorage.setItem(storage.ticketFilter, 'todos');
+      renderDesk();
+    });
+  }
+
+  const filterNaoLidos = document.getElementById('filterNaoLidos');
+  if (filterNaoLidos) {
+    filterNaoLidos.addEventListener('click', () => {
+      localStorage.setItem(storage.ticketFilter, 'nao_lidos');
+      renderDesk();
+    });
+  }
+
+  document.querySelectorAll('[data-ticket]').forEach((button) => {
+    button.addEventListener('click', () => {
+      localStorage.setItem(storage.selectedTicket, button.dataset.ticket);
       renderDesk();
     });
   });
 
-  const btnLista = document.getElementById('btnLista');
-  const btnKanban = document.getElementById('btnKanban');
-  const listView = document.getElementById('listView');
-  const kanbanView = document.getElementById('kanbanView');
-
-  btnLista.addEventListener('click', () => {
-    btnLista.classList.add('active-mode');
-    btnKanban.classList.remove('active-mode');
-    listView.style.display = 'grid';
-    kanbanView.style.display = 'none';
-  });
-
-  btnKanban.addEventListener('click', () => {
-    btnKanban.classList.add('active-mode');
-    btnLista.classList.remove('active-mode');
-    listView.style.display = 'none';
-    kanbanView.style.display = 'grid';
-  });
-
-  document.getElementById('sendForm').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const input = document.getElementById('sendInput');
-    const text = input.value.trim();
-    if (!text) return;
-
-    const now = new Date();
-    const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    const data = getConversations();
-    const item = data.find((c) => c.id === selected.id);
-
-    if (item) {
-      item.messages.push({ dir: 'out', text, time });
-      item.snippet = text;
-      item.time = time;
-      saveConversations(data);
-      input.value = '';
+  document.querySelectorAll('[data-open-ticket]').forEach((card) => {
+    card.addEventListener('click', () => {
+      const ticketId = card.dataset.openTicket;
+      localStorage.setItem(storage.selectedTicket, ticketId);
+      localStorage.setItem(storage.deskMode, 'lista');
       renderDesk();
-    }
+      const toast = document.getElementById('deskToast');
+      if (toast) {
+        toast.hidden = false;
+        toast.textContent = `Abrindo ticket #${ticketId}`;
+        setTimeout(() => {
+          toast.hidden = true;
+        }, 1600);
+      }
+    });
   });
+
+  const sendForm = document.getElementById('sendForm');
+  if (sendForm) {
+    sendForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const input = document.getElementById('sendInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const now = new Date();
+      const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const data = getTickets();
+      const ticket = data.find((t) => t.id === selected.id);
+
+      if (ticket) {
+        ticket.messages.push({ dir: 'out', text, time });
+        ticket.snippet = text;
+        ticket.time = time;
+        saveTickets(data);
+        input.value = '';
+        renderDesk();
+      }
+    });
+  }
 }
 
 function render() {
