@@ -6,7 +6,7 @@ const journeys = {
     subtitle: 'Cenário 1: convite autorizado do gestor para conexão CoEx.'
   },
   gestor: {
-    title: 'Jornada 2 · Gestor de Equipe',
+    title: 'Jornada 3 · Gestor de Equipe',
     subtitle: 'Gestão autônoma com prova de ROI operacional.',
     screens: [
       {
@@ -24,7 +24,7 @@ const journeys = {
     ]
   },
   matriz: {
-    title: 'Jornada 3 · Matriz / Brand Owner',
+    title: 'Jornada 4 · Matriz / Brand Owner',
     subtitle: 'Governança central, compliance e poder de veto.',
     screens: [
       {
@@ -43,7 +43,7 @@ const journeys = {
     ]
   },
   comercial: {
-    title: 'Jornada 4 · Comercial Blip',
+    title: 'Jornada 5 · Comercial Blip',
     subtitle: 'Product-Led Sales com sinais de adoção orgânica.',
     screens: [
       {
@@ -74,7 +74,7 @@ function renderLanding() {
       </header>
       <main class="container">
         <div class="card panel">
-          <h2>Landing Page · 4 Portais de Jornada</h2>
+          <h2>Landing Page · 5 Portais de Jornada</h2>
           <p class="small" style="margin-top:8px;">Aha Moment: conexão via QR e baseline retroativo para provar ROI em dias/semanas.</p>
           <div class="inline-badges">
             <span class="badge success">RF01 Coexistência Transparente</span>
@@ -89,6 +89,12 @@ function renderLanding() {
             <h3>${journeys.agente.title}</h3>
             <p>${journeys.agente.subtitle}</p>
             <p class="small" style="margin-top:10px;color:#0f766e;">Exemplo do cenário 1: convite autorizado do gestor para um número pré-validado.</p>
+          </a>
+
+          <a class="portal card" href="agent.html?step=desk&scenario=selfconnect" target="_blank" rel="noopener noreferrer">
+            <h3>Jornada 2 · Agente (Self-connect no Desk)</h3>
+            <p>Cenário 2: agente já logado no Blip Desk conecta o próprio WhatsApp Business.</p>
+            <p class="small" style="margin-top:10px;color:#0f766e;">Entrada direta em Atendimento com prompt + fluxo Saber mais + conexão CoEx pessoal.</p>
           </a>
 
           ${['gestor', 'matriz', 'comercial']
