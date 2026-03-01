@@ -274,6 +274,10 @@ function getParamStep() {
   return new URL(window.location.href).searchParams.get('step');
 }
 
+function isSelfConnectScenario() {
+  return new URL(window.location.href).searchParams.get('scenario') === 'selfconnect';
+}
+
 function navigateStep(step) {
   const url = new URL(window.location.href);
   url.searchParams.set('step', step);
@@ -282,6 +286,12 @@ function navigateStep(step) {
 }
 
 function initStorage() {
+  if (isSelfConnectScenario()) {
+    localStorage.setItem(storage.passwordCreated, 'true');
+    localStorage.setItem(storage.whatsappConnected, 'true');
+    localStorage.setItem(storage.onboardingCompleted, 'true');
+  }
+
   if (!localStorage.getItem(storage.inviteContext)) {
     localStorage.setItem(storage.inviteContext, JSON.stringify(inviteContext));
   }
