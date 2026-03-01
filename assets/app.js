@@ -104,17 +104,17 @@ function renderLanding() {
             <p class="small" style="margin-top:10px;color:#0f766e;">Acesse o módulo administrativo com sidebar, métricas e planos.</p>
           </a>
 
-          ${['matriz', 'comercial']
-            .map(
-              (id) => `
-              <article class="portal card" data-journey="${id}">
-                <h3>${journeys[id].title}</h3>
-                <p>${journeys[id].subtitle}</p>
-                <p class="small" style="margin-top:10px;">Jornada em preview resumido</p>
-              </article>
-            `
-            )
-            .join('')}
+          <a class="portal card" href="matrix.html?step=discovery" target="_blank" rel="noopener noreferrer">
+            <h3>Matriz / Governança</h3>
+            <p>Descubra números WhatsApp usando sua marca e estabeleça governança.</p>
+            <p class="small" style="margin-top:10px;color:#0f766e;">Painel corporativo com descoberta, vínculos, auditoria, governança e upgrade enterprise.</p>
+          </a>
+
+          <article class="portal card" data-journey="comercial">
+            <h3>${journeys.comercial.title}</h3>
+            <p>${journeys.comercial.subtitle}</p>
+            <p class="small" style="margin-top:10px;">Jornada em preview resumido</p>
+          </article>
         </section>
       </main>
     </div>
