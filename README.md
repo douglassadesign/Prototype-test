@@ -1,29 +1,24 @@
-# Blip Go Personal — Protótipo Navegável (Mock-only)
+# Blip CoEx — Central de Comando (Protótipo Navegável)
 
-Este repositório contém um protótipo front-end completo da experiência de onboarding do **Blip Go Personal**.
-Todo o fluxo é simulado com **HTML + CSS + JavaScript puro**, sem backend e sem build step, pronto para publicação em **GitHub Pages**.
+Protótipo front-end em **HTML + CSS + JavaScript puro** para apresentar a proposta de valor do **Blip CoEx** com foco em:
+- Governança de conversas (Shadow WhatsApp)
+- Eficiência operacional com IA
+- Estratégia PLG (bottom-up + expansão enterprise)
 
-## O que está incluído
+## Escopo coberto
 
-- Simulação de e-mail de convite em `/screens/email.html`
-- Fluxo com rotas hash em `/index.html`:
-  - `#/invite`
-  - `#/create-password`
-  - `#/qr-connect`
-  - `#/connecting`
-  - `#/connected`
-  - `#/app/atendimento`
-  - `#/app/relatorios`
-- Área de Atendimento com dois modos:
-  - **Desk** (lista de contatos + conversa)
-  - **CRM** (kanban + drawer lateral)
-- Área de Relatórios com KPIs, gráfico em barras (HTML/CSS) e tabela por colaborador
-- Persistência via `localStorage` para:
-  - senha criada
-  - estado de conexão WhatsApp
-  - usuário logado
-  - mensagens enviadas
-  - mudanças de status no CRM
+Landing page interativa com 4 portais de jornada:
+1. **Agente / Franqueado** (onboarding QR, sidekick kanban, upsell PLG)
+2. **Gestor de Equipe** (convite em lote, dashboard baseline vs atual, checkout self-service)
+3. **Matriz / Brand Owner** (descoberta shadow WhatsApp, central de vínculo, QA/compliance)
+4. **Comercial Blip** (inteligência B2B, radar de oportunidades, gerador de pitch ROI)
+
+## Requisitos funcionais representados
+
+- **RF01** Coexistência transparente (não substitui WhatsApp no celular)
+- **RF02** Triagem híbrida IA + humano (determinístico + probabilístico)
+- **RF03** Retroatividade explícita (Meta API: últimos 6 meses)
+- **RF04** Hierarquia de permissões (Matriz com visibilidade/veto sobre Franquia)
 
 ## Estrutura
 
@@ -33,51 +28,20 @@ Todo o fluxo é simulado com **HTML + CSS + JavaScript puro**, sem backend e sem
   /assets
     styles.css
     app.js
-  /mocks
-    users.json
-    contacts.json
-    conversations.json
-    reports.json
   /screens
     email.html
 ```
 
-## Como rodar localmente
-
-> Opcional: em geral o GitHub Pages já servirá corretamente.
-
-Você pode abrir o `index.html` direto no navegador, mas para garantir leitura de JSON via `fetch`, prefira um servidor estático simples:
-
-### Opção com Python
+## Como executar localmente
 
 ```bash
 python3 -m http.server 5500
 ```
 
-Depois acesse:
-- `http://localhost:5500/screens/email.html`
-- `http://localhost:5500/index.html#/invite?token=INVITE_TOKEN_123`
+Acesse:
+- `http://localhost:5500/`
 
-## Deploy no GitHub Pages (somente hosting estático)
+## Observações
 
-1. Faça push deste conteúdo para o branch `main` do seu repositório.
-2. No GitHub, abra **Settings**.
-3. Vá em **Pages**.
-4. Em **Build and deployment**, selecione:
-   - **Source**: `Deploy from a branch`
-   - **Branch**: `main`
-   - **Folder**: `/ (root)`
-5. Salve e aguarde o GitHub publicar a URL.
-
-## URLs importantes
-
-- Simulação de e-mail:
-  - `/screens/email.html`
-- Início do onboarding com token:
-  - `/index.html#/invite?token=INVITE_TOKEN_123`
-
-## Observações de protótipo
-
-- Os dados são 100% mockados em `mocks/*.json`.
-- Não há integração real com WhatsApp.
-- O QR Code e a etapa de conexão são simulados visualmente.
+- É um protótipo visual de demonstração.
+- Não há backend nem integração real com APIs externas.
