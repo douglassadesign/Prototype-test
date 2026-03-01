@@ -97,7 +97,14 @@ function renderLanding() {
             <p class="small" style="margin-top:10px;color:#0f766e;">Entrada direta em Atendimento com prompt + fluxo Saber mais + conexão CoEx pessoal.</p>
           </a>
 
-          ${['gestor', 'matriz', 'comercial']
+
+          <a class="portal card" href="manager.html" target="_blank" rel="noopener noreferrer">
+            <h3>Jornada 2 · Gestor / Equipe</h3>
+            <p>Gestão de time com cadastro, convites, reconhecimento bottom-up, relatórios e upgrade.</p>
+            <p class="small" style="margin-top:10px;color:#0f766e;">Acesse o módulo administrativo com sidebar, métricas e planos.</p>
+          </a>
+
+          ${['matriz', 'comercial']
             .map(
               (id) => `
               <article class="portal card" data-journey="${id}">
