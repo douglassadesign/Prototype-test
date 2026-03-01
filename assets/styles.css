@@ -429,6 +429,7 @@ input { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px
 }
 
 .desk-internal-topbar h2 { font-size: 28px; font-weight: 600; }
+.desk-header-actions { display: flex; align-items: center; gap: 10px; }
 .filter-row { display: flex; gap: 8px; margin: 10px 0; }
 .pill {
   border: 1px solid var(--border);
@@ -481,6 +482,27 @@ input { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px
 .ticket-row strong { display: block; font-size: 14px; }
 .ticket-row small { color: var(--muted); }
 .ticket-row.active { border-color: var(--blip-blue); background: #eef6ff; }
+.ticket-side-meta { display: grid; justify-items: end; gap: 4px; }
+.channel-micro { font-size: 11px; color: #475569; }
+.source-chip {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  font-size: 13px;
+}
+.channel-select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 8px;
+  font-size: 12px;
+  background: #fff;
+  margin-bottom: 10px;
+}
+.connect-cta { white-space: nowrap; font-size: 13px; }
 .queue-empty { margin: 4px 2px; }
 
 .contact-header {
@@ -549,6 +571,40 @@ input { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
   z-index: 100;
 }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.desk-modal {
+  width: min(640px, 100%);
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+  padding: 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.modal-list { margin: 0; padding-left: 18px; color: #334155; display: grid; gap: 4px; }
+.carousel-indicator { font-size: 14px; color: #475569; }
+.modal-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.modal-alert {
+  border-radius: 10px;
+  border: 1px solid;
+  padding: 10px;
+  font-size: 14px;
+}
+.modal-alert.error { background: #fff1f2; border-color: #fecdd3; color: #9f1239; }
+.modal-alert.success { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
 
 @media (max-width: 1320px) {
   .list-layout { grid-template-columns: 1fr; }
